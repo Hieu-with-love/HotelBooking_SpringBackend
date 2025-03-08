@@ -2,6 +2,7 @@ package hcmute.edu.vn.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,19 +11,14 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "accounts")
+@MappedSuperclass
 public class Account {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String email;
-    private String password;
+    protected String email;
+    protected String password;
     @Column(name = "full_name")
-    private String confirmPassword;
+    protected String confirmPassword;
     @Column(name = "create_at")
-    private LocalDate createdAt;
+    protected LocalDate createdAt;
     @Column(name = "update_at")
-    private LocalDate updatedAt;
+    protected LocalDate updatedAt;
 }
