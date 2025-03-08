@@ -2,12 +2,8 @@ package hcmute.edu.vn.model;
 
 import hcmute.edu.vn.enums.ENATION;
 import hcmute.edu.vn.enums.EROLE;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -18,10 +14,20 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "users")
 public class User extends Account {
-    private String phoneNumber;
-    private String firstName;
-    private String lastName;
-    private LocalDate dayOfBirth;
-    private EROLE gender;
-    private ENATION nation;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
+
+    @Column(name = "phone_number")
+    protected String phoneNumber;
+    @Column(name = "first_name")
+    protected String firstName;
+    @Column(name = "last_name")
+    protected String lastName;
+    @Column(name = "day_of_birth")
+    protected LocalDate dayOfBirth;
+    protected String gender;
+    protected String status;
+    protected EROLE role;
+    protected ENATION nation;
 }
