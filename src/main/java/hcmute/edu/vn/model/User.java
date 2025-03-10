@@ -30,4 +30,8 @@ public class User extends Account {
     protected String status;
     protected EROLE role;
     protected ENATION nation;
+    protected boolean isVerified;
+
+    @OneToOne(mappedBy = "user")
+    private VerificationCode verificationCode;
 }
