@@ -93,9 +93,15 @@ public class AuthController {
                 ResponseEntity.badRequest().body("Invalid verification code");
     }
 
-    @PostMapping("/reset-password")
+    @GetMapping("/reset-password")
     public ResponseEntity<?> sendEmailToResetPassword(){
-        return null;
+        try{
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            emailService.sendEmailToResetPassword(email);
+            return ResponseEntity.ok("Change password successfully");
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body("Change password failure");
+        }
     }
 
 }
