@@ -6,10 +6,13 @@ import hcmute.edu.vn.model.VerificationCode;
 import hcmute.edu.vn.repository.UserRepository;
 import hcmute.edu.vn.repository.VerificationCodeRepository;
 import hcmute.edu.vn.service.EmailService;
+import hcmute.edu.vn.utils.EmailUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
     private final VerificationCodeRepository verifyCodeRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${spring.mail.username}")
     private String sender;
@@ -38,8 +42,26 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public boolean resetPassword(EmailDetails details) {
-        return false;
+    public void sendEmailToResetPassword(String email) {
+        try{
+            String newPassword = EmailUtils.generateRandomPassword();
+
+            SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setSubject("Reset password");
+            msg.setFrom(sender);
+            msg.setTo(email);
+            msg.setText(EmailUtils.getResetPasswordBody(email, newPassword));
+
+            mailSender.send(msg);
+
+            // Send email successfully -> update new password
+            User existingUser = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            existingUser.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(existingUser);
+        }catch (MailSendException e){
+            throw new RuntimeException("Error sending email");
+        }
     }
 
     @Override
