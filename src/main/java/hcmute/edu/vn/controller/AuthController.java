@@ -5,6 +5,7 @@ import hcmute.edu.vn.dto.request.LoginRequest;
 import hcmute.edu.vn.dto.request.SignupRequest;
 import hcmute.edu.vn.dto.response.AuthResponse;
 import hcmute.edu.vn.model.User;
+import hcmute.edu.vn.service.EmailService;
 import hcmute.edu.vn.service.UserService;
 import hcmute.edu.vn.service.impl.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,6 +27,7 @@ public class AuthController {
     private final JwtProvider jwtProvider;
     private final CustomUserDetailService customUserDetailService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest req){
@@ -83,6 +82,20 @@ public class AuthController {
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    @GetMapping("/verify-account")
+    public ResponseEntity<?> sendEmailToVerifyAccount(@RequestParam("token") String token){
+        boolean isVerified = emailService.verifyToken(token);
+        return isVerified ?
+                ResponseEntity.ok("Account verified successfully")
+                :
+                ResponseEntity.badRequest().body("Invalid verification code");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> sendEmailToResetPassword(){
+        return null;
     }
 
 }
