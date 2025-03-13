@@ -6,18 +6,26 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User extends Account {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
+    private String email;
+    private String password;
+    @Column(name = "full_name")
+    private String confirmPassword;
+    @Column(name = "create_at")
+    private LocalDate createdAt;
+    @Column(name = "update_at")
+    private LocalDate updatedAt;
     @Column(name = "phone_number")
     protected String phoneNumber;
     @Column(name = "first_name")
@@ -28,7 +36,9 @@ public class User extends Account {
     protected LocalDate dayOfBirth;
     protected String gender;
     protected String status;
+
     protected EROLE role;
+
     protected ENATION nation;
     protected boolean isVerified;
 
