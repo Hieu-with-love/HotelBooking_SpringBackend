@@ -3,6 +3,7 @@ package hcmute.edu.vn.service.impl;
 import hcmute.edu.vn.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,10 +23,12 @@ public class CustomUserDetailService implements UserDetailsService {
         hcmute.edu.vn.model.User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + username));
 
+        System.out.println(user.getRole().name());
+
         return new org.springframework.security.core.userdetails.User(
                 username,
                 user.getPassword(),
-                List.of((GrantedAuthority) () -> "ROLE_" + user.getRole().name())
+                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
         );
     }
 }

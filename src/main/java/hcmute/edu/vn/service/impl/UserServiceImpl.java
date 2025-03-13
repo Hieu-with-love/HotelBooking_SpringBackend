@@ -6,16 +6,17 @@ import hcmute.edu.vn.enums.EROLE;
 import hcmute.edu.vn.model.User;
 import hcmute.edu.vn.model.VerificationCode;
 import hcmute.edu.vn.repository.UserRepository;
+import hcmute.edu.vn.repository.VerificationCodeRepository;
 import hcmute.edu.vn.service.EmailService;
 import hcmute.edu.vn.service.UserService;
 import hcmute.edu.vn.utils.EmailUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final VerificationCodeRepository verificationCodeRepository;
 
     @Override
     public User signup(SignupRequest req) {
@@ -56,6 +58,7 @@ public class UserServiceImpl implements UserService {
                     .code(EmailUtils.generateVerificationCode())
                     .user(createUser)
                     .build();
+            verificationCodeRepository.save(code);
 
             EmailDetails eDetails = new EmailDetails();
             eDetails.setRecipient(req.getEmail());
@@ -64,6 +67,7 @@ public class UserServiceImpl implements UserService {
             emailService.sendEmailToVerifyAccount(eDetails);
         }catch (Exception e){
             userRepository.delete(createUser);
+            verificationCodeRepository.delete(verificationCodeRepository.findByUser(createUser).get());
             throw new MailSendException("Cannot send email");
         }
 

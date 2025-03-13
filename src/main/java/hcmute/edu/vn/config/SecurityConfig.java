@@ -30,8 +30,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/api/auth/signup").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
-                        .requestMatchers("/api/**").authenticated()
-                                .anyRequest().permitAll()
+                        .requestMatchers("/api/auth/verify-account").permitAll()
+                        .requestMatchers("/api/customer/**").hasAnyRole("CUSTOMER", "LOYAL_CUSTOMER")
+                        .requestMatchers("/api/partner/**").hasRole("PARTNER")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
                 );
 
         return http.build();
