@@ -9,17 +9,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "address")
+@Table(name = "rooms")
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
 
     private int numberOfAdults;
     private int numberOfChildren;
@@ -27,11 +29,11 @@ public class Room {
     private BigDecimal price;
     private ROOMSTATUS status = ROOMSTATUS.AVAILABLE;
     private String description;
-    private EROOMTYPE type;
+    private EROOMTYPE type = EROOMTYPE.SINGLE;
 
     @ElementCollection
     private List<ESERVICE> services;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RoomImage> images;
+    private List<RoomImage> images = new ArrayList<>();
 }

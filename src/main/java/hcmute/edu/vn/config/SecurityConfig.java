@@ -34,7 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/customer/**").hasAnyRole("CUSTOMER", "LOYAL_CUSTOMER")
                         .requestMatchers("/api/partner/**").hasRole("PARTNER")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 );
 
         return http.build();
