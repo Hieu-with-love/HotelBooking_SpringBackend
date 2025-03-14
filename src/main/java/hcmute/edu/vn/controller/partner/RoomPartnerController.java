@@ -1,4 +1,4 @@
 package hcmute.edu.vn.controller.partner;
 
-public class RoomController {
+public class RoomPartnerController {
 }
