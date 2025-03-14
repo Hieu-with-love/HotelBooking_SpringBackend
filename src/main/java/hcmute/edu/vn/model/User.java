@@ -18,14 +18,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    private String email;
-    private String password;
+    protected String email;
+    protected String password;
     @Column(name = "full_name")
-    private String confirmPassword;
+    protected String confirmPassword;
     @Column(name = "create_at")
-    private LocalDate createdAt;
+    protected LocalDate createdAt;
     @Column(name = "update_at")
-    private LocalDate updatedAt;
+    protected LocalDate updatedAt;
     @Column(name = "phone_number")
     protected String phoneNumber;
     @Column(name = "first_name")
@@ -43,5 +43,5 @@ public class User {
     protected boolean isVerified;
 
     @OneToOne(mappedBy = "user")
-    private VerificationCode verificationCode;
+    protected VerificationCode verificationCode;
 }
