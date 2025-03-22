@@ -4,13 +4,17 @@ import hcmute.edu.vn.utils.JwtUtils;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
 public class JwtProvider {
+
     public String generateToken(Authentication auth){
         JwtBuilder jwtBuilder = Jwts.builder()
                 .setSubject(auth.getName())
@@ -20,12 +24,12 @@ public class JwtProvider {
                 .claim("role", auth.getAuthorities());
 
         // When we sign the toke, we use algorithm HS256 (Header: Algorithm: HS512 + Payload + Signature)
-        return jwtBuilder.signWith(JwtUtils.decodeKey, SignatureAlgorithm.HS512).compact();
+        return jwtBuilder.signWith(JwtUtils.getDecodeKey(), SignatureAlgorithm.HS512).compact();
     }
 
     public String getEmailFromJwtToken(String token){
         return Jwts.parserBuilder()
-                .setSigningKey(JwtUtils.decodeKey)
+                .setSigningKey(JwtUtils.getDecodeKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()

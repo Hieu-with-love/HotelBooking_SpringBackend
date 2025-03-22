@@ -27,8 +27,13 @@ public class SecurityConfig {
                 .sessionManagement(manager ->
                         manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtAuthenFilter(), BasicAuthenticationFilter.class)
-                .authorizeHttpRequests(req ->
-                        req.requestMatchers("/api/**").authenticated()
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers("/api/auth/signup").permitAll()
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/verify-account").permitAll()
+                        .requestMatchers("/api/customer/**").hasAnyRole("CUSTOMER", "LOYAL_CUSTOMER")
+                        .requestMatchers("/api/partner/**").hasRole("PARTNER")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .anyRequest().permitAll()
                 );
 
