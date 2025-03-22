@@ -1,6 +1,6 @@
 package hcmute.edu.vn.enums;
 
-public enum ROOMSTATUS {
+public enum EROOMSTATUS {
     AVAILABLE,
     BOOKED,
     OCCUPIED,

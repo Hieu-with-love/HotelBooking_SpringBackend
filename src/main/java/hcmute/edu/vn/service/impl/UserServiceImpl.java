@@ -12,6 +12,7 @@ import hcmute.edu.vn.service.UserService;
 import hcmute.edu.vn.utils.EmailUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailSendException;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

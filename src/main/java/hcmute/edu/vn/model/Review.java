@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,4 +16,18 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private double ratings;
+
+    private String content;
+
+    private String image;
+
+    // date review
+
+    @OneToMany
+    private List<Review> reviews;
+
+    @ManyToOne
+    private User user;
 }
