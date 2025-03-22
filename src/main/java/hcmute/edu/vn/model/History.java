@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +17,9 @@ public class History {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany
+    private List<Booking> bookings;
+
     @OneToOne
-    private Customer customer;
+    private User customer;
 }

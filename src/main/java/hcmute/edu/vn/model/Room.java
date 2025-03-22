@@ -2,7 +2,7 @@ package hcmute.edu.vn.model;
 
 import hcmute.edu.vn.enums.EROOMTYPE;
 import hcmute.edu.vn.enums.ESERVICE;
-import hcmute.edu.vn.enums.ROOMSTATUS;
+import hcmute.edu.vn.enums.EROOMSTATUS;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +27,7 @@ public class Room {
     private int numberOfChildren;
     private int numberOfBeds;
     private BigDecimal price;
-    private ROOMSTATUS status = ROOMSTATUS.AVAILABLE;
+    private EROOMSTATUS status = EROOMSTATUS.AVAILABLE;
     private String description;
     private EROOMTYPE type = EROOMTYPE.SINGLE;
 
