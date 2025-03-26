@@ -23,62 +23,6 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
-    private final VerificationCodeRepository verificationCodeRepository;
-
-    @Override
-    public User signup(SignupRequest req) {
-        EROLE role;
-        if (req.getRole()==null){
-            role = EROLE.CUSTOMER;
-        }else {
-            role = EROLE.valueOf(req.getRole());
-        }
-
-        if (existsByEmail(req.getEmail())) {
-            throw new BadCredentialsException("Email already exists");
-        }
-
-        if (!req.getPassword().equals(req.getConfirmPassword())) {
-            throw new BadCredentialsException("Password not match");
-        }
-
-        User createUser = new User();
-        createUser.setEmail(req.getEmail());
-        createUser.setPassword(passwordEncoder.encode(req.getPassword()));
-        createUser.setRole(role);
-        createUser.setFirstName(req.getFirstName());
-        createUser.setLastName(req.getLastName());
-        createUser.setVerified(false);
-        userRepository.save(createUser);
-
-        try{
-            // We need to create verify code
-            VerificationCode code = VerificationCode.builder()
-                    .code(EmailUtils.generateVerificationCode())
-                    .user(createUser)
-                    .build();
-            verificationCodeRepository.save(code);
-
-            EmailDetails eDetails = new EmailDetails();
-            eDetails.setRecipient(req.getEmail());
-            eDetails.setSubject("Verify your account");
-            eDetails.setMsgBody(EmailUtils.getVerifyAccountEmailBody(createUser.getLastName(), createUser.getEmail(), code.getCode()));
-            emailService.sendEmailToVerifyAccount(eDetails);
-        }catch (Exception e){
-            userRepository.delete(createUser);
-            verificationCodeRepository.delete(verificationCodeRepository.findByUser(createUser).get());
-            throw new MailSendException("Cannot send email");
-        }
-
-        return createUser;
-    }
-
-    @Override
-    public String login(String email, String password) {
-        return null;
-    }
 
     @Override
     public boolean existsByEmail(String email) {

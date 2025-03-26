@@ -15,13 +15,13 @@ import java.util.Date;
 @Service
 public class JwtProvider {
 
-    public String generateToken(Authentication auth){
+    public String generateToken(String email, String role){
         JwtBuilder jwtBuilder = Jwts.builder()
-                .setSubject(auth.getName())
+                .setSubject(email)
                 .setIssuer("devzeus.com")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + JwtUtils.EXPIRATION_TIME))
-                .claim("role", auth.getAuthorities());
+                .claim("role", role);
 
         // When we sign the toke, we use algorithm HS256 (Header: Algorithm: HS512 + Payload + Signature)
         return jwtBuilder.signWith(JwtUtils.getDecodeKey(), SignatureAlgorithm.HS512).compact();
