@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/booking_app?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/booking_app?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: root
-    password: 1234
+    password: dev123@
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:

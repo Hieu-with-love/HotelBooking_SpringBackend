@@ -31,15 +31,16 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/signup").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/auth/verify-account").permitAll()
-                        .requestMatchers("/api/customer/**").hasAnyRole("CUSTOMER", "LOYAL_CUSTOMER")
-                        .requestMatchers("/api/partner/**").hasRole("PARTNER")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/api/customer/**").hasAnyRole("CUSTOMER", "LOYAL_CUSTOMER")
+//                        .requestMatchers("/api/partner/**").hasRole("PARTNER")
+//                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .anyRequest().permitAll()
                 );
 
         return http.build();
     }
 
+    // configure to connect with frontend
     private CorsConfigurationSource corsConfigurationSource(){
         return new CorsConfigurationSource() {
             @Override
