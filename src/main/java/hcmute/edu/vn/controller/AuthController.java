@@ -1,23 +1,14 @@
 package hcmute.edu.vn.controller;
 
-import hcmute.edu.vn.config.JwtProvider;
 import hcmute.edu.vn.dto.request.LoginRequest;
 import hcmute.edu.vn.dto.request.SignupRequest;
 import hcmute.edu.vn.dto.response.AuthResponse;
-import hcmute.edu.vn.model.User;
 import hcmute.edu.vn.service.AuthService;
 import hcmute.edu.vn.service.EmailService;
-import hcmute.edu.vn.service.UserService;
-import hcmute.edu.vn.service.impl.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
