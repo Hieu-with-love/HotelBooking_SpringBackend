@@ -19,16 +19,22 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
-    private List<Room> rooms = new ArrayList<>();
-
     private String checkIn;
-    private String checkOut;
 
-    @ManyToOne
-    private Payment paymentType;
+    private String checkOut;
 
     private BigDecimal totalPrice;
 
     private String specialRequest;
+
+    @ManyToOne
+    private Payment paymentType;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<BookingDetail> bookingDetails;
 }

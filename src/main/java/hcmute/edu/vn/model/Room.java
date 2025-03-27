@@ -21,19 +21,31 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     private int numberOfAdults;
+
     private int numberOfChildren;
+
     private int numberOfBeds;
+
     private BigDecimal price;
-    private EROOMSTATUS status = EROOMSTATUS.AVAILABLE;
+
     private String description;
+
+    private EROOMSTATUS status = EROOMSTATUS.AVAILABLE;
+
     private EROOMTYPE type = EROOMTYPE.SINGLE;
+
 
     @ElementCollection
     private List<ESERVICE> services;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomImage> images = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    private Hotel hotel;
 }

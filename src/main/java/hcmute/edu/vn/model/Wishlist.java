@@ -19,10 +19,8 @@ public class Wishlist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal totalAmount;
-
-    @OneToMany
-    private List<Room> rooms = new ArrayList<>();
+    @ManyToMany
+    private List<Hotel> hotels = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")

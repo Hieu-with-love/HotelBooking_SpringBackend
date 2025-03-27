@@ -23,7 +23,8 @@ public class Review {
 
     private String image;
 
-    // date review
+    @ManyToOne
+    private Room room;
 
     @OneToMany
     private List<Review> reviews;

@@ -40,7 +40,7 @@ public class HotelServiceImpl implements HotelService {
         addressRepository.save(address);
 
         hotel.setName(hotelDto.getName());
-        hotel.setPicture(hotelDto.getPicture());
+//        hotel.setPicture(hotelDto.getPicture());
         hotel.setAddress(address);
 
         return hotelRepository.save(hotel);
@@ -52,7 +52,7 @@ public class HotelServiceImpl implements HotelService {
                 .orElseThrow(() -> new RuntimeException("Hotel not found with id " + hotelId));
 
         existingHotel.setName(hotelDto.getName());
-        existingHotel.setPicture(hotelDto.getPicture());
+//        existingHotel.setPicture(hotelDto.getPicture());
         existingHotel.getAddress().setNumber(hotelDto.getNumber());
 
         return hotelRepository.save(existingHotel);
