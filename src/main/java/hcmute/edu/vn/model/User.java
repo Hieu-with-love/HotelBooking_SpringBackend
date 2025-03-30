@@ -47,8 +47,16 @@ public abstract class User {
     protected boolean status;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Booking> bookings;
+    protected List<Booking> bookings;
 
     @OneToOne(mappedBy = "user")
     protected VerificationCode verificationCode;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "customer_voucher",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "voucher_id")
+    )
+    protected List<Voucher> vouchers;
 }
