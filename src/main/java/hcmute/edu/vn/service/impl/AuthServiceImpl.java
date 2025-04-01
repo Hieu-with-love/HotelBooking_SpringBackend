@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,8 @@ public class AuthServiceImpl implements AuthService {
     private final CustomUserDetailService customUserDetailService;
 
     @Override
-    public String signup(SignupRequest req) {
+    @Transactional
+    public boolean signup(SignupRequest req) {
         EROLE role;
         if (req.getRole()==null){
             role = EROLE.CUSTOMER;
@@ -56,10 +58,11 @@ public class AuthServiceImpl implements AuthService {
         createUser.setVerified(false);
         userRepository.save(createUser);
 
+        // Generate JWT token for verification
         String jwt = jwtProvider.generateToken(createUser.getEmail(), createUser.getRole().name());
 
-        // Send token to user email
-        try{
+        // Send verification email with JWT token
+        try {
             EmailDetails emailDetails = new EmailDetails();
             emailDetails.setSubject("Verify your email");
             emailDetails.setRecipient(req.getEmail());
@@ -69,11 +72,35 @@ public class AuthServiceImpl implements AuthService {
                     jwt));
 
             emailService.sendEmailToVerifyAccount(emailDetails);
-        }catch (Exception e){
-            throw new RuntimeException("Error while sending email");
+        } catch (Exception e) {
+            // If email sending fails, we'll keep the user but mark them as unverified
+            // This way they can request a new verification email later
+            createUser.setVerified(false);
+            userRepository.save(createUser);
+            throw new RuntimeException("Failed to send verification email. Please try again later.");
         }
 
-        return jwt;
+        return true;
+    }
+
+    @Override
+    public String verifyAccount(String token) {
+        try {
+            // Extract email from JWT token
+            String email = jwtProvider.getEmailFromJwtToken(token);
+            
+            // Find user by email
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            
+            // Mark user as verified
+            user.setVerified(true);
+            userRepository.save(user);
+            
+            return jwtProvider.generateToken(user.getEmail(), user.getRole().name());
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid or expired verification token");
+        }
     }
 
     @Override

@@ -18,7 +18,7 @@ spring:
     port: 587
     username: hieu01bdvn@gmail.com
     # This is password in feature "app password" of gmail
-    password: morg tomc qaym namb
+    password: dwle xmjw pjgg jzju
     properties:
       mail:
         smtp:

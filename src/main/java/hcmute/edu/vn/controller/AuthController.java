@@ -21,16 +21,20 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest req){
         try{
-            String jwt = authService.signup(req);
+            boolean registered = authService.signup(req);
 
             AuthResponse authResponse = new AuthResponse();
-            authResponse.setJwt(jwt);
+            authResponse.setJwt("");
+            authResponse.setStatus(registered);
             authResponse.setMessage("User registered successfully");
 
             return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(
-                AuthResponse.builder().message("Error: " + e.getMessage()).build()
+                AuthResponse.builder()
+                        .message("Error: " + e.getMessage())
+                        .status(false)
+                        .build()
             );
         }
     }
@@ -54,14 +58,24 @@ public class AuthController {
         }
     }
 
-//    @GetMapping("/verify-account")
-//    public ResponseEntity<?> sendEmailToVerifyAccount(@RequestParam("token") String token){
-//        boolean isVerified = emailService.verifyToken(token);
-//        return isVerified ?
-//                ResponseEntity.ok("Account verified successfully")
-//                :
-//                ResponseEntity.badRequest().body("Invalid verification code");
-//    }
+    @GetMapping("/verify-account")
+    public ResponseEntity<?> verifyAccount(@RequestParam("token") String token){
+        try {
+            String jwt = authService.verifyAccount(token);
+            return ResponseEntity.ok(AuthResponse.builder()
+                    .message("Account verified successfully")
+                            .jwt(jwt)
+                            .status(true)
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    AuthResponse.builder()
+                            .message("Error: " + e.getMessage())
+                            .status(false)
+                            .build()
+            );
+        }
+    }
 
     @GetMapping("/reset-password")
     public ResponseEntity<?> sendEmailToResetPassword(){
