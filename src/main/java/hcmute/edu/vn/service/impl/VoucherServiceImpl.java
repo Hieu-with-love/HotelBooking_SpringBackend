@@ -1,6 +1,9 @@
 package hcmute.edu.vn.service.impl;
 
+import hcmute.edu.vn.converter.VoucherConverter;
 import hcmute.edu.vn.dto.VoucherDto;
+import hcmute.edu.vn.dto.response.PageResponse;
+import hcmute.edu.vn.dto.response.VoucherResponse;
 import hcmute.edu.vn.model.Voucher;
 import hcmute.edu.vn.repository.VoucherRepository;
 import hcmute.edu.vn.service.VoucherService;
@@ -16,6 +19,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class VoucherServiceImpl implements VoucherService {
     private final VoucherRepository voucherRepository;
+    private final VoucherConverter voucherConverter;
 
     @Override
     public VoucherDto getVoucher(Long voucherId) {
@@ -38,9 +42,10 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public Page<Voucher> getVouchers(int page, int size) {
+    public PageResponse<VoucherResponse> getVouchers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return voucherRepository.findAll(pageable);
+        Page<Voucher> vouchers = voucherRepository.findAll(pageable);
+        return voucherConverter.toPageResponse(vouchers);
     }
 
     @Override
