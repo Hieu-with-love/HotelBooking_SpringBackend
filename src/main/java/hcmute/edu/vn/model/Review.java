@@ -23,6 +23,7 @@ public class Review {
 
     private String image;
 
+    //?why
     @ManyToOne
     private Room room;
 

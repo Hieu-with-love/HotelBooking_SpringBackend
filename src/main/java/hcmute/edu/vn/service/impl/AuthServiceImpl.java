@@ -1,6 +1,7 @@
 package hcmute.edu.vn.service.impl;
 
 import hcmute.edu.vn.config.JwtProvider;
+import hcmute.edu.vn.converter.UserConverter;
 import hcmute.edu.vn.dto.request.EmailDetails;
 import hcmute.edu.vn.dto.request.SignupRequest;
 import hcmute.edu.vn.enums.EROLE;
@@ -30,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserService userService;
     private final EmailService emailService;
     private final CustomUserDetailService customUserDetailService;
+    private final UserConverter userConverter;
 
     @Override
     @Transactional
@@ -49,13 +51,10 @@ public class AuthServiceImpl implements AuthService {
             throw new BadCredentialsException("Password not match");
         }
 
+        // Convert SignupRequest to User entity
         User createUser = new Customer();
-        createUser.setEmail(req.getEmail());
         createUser.setPassword(passwordEncoder.encode(req.getPassword()));
         createUser.setRole(role);
-        createUser.setFirstName(req.getFirstName());
-        createUser.setLastName(req.getLastName());
-        createUser.setVerified(false);
         userRepository.save(createUser);
 
         // Generate JWT token for verification
@@ -73,8 +72,6 @@ public class AuthServiceImpl implements AuthService {
 
             emailService.sendEmailToVerifyAccount(emailDetails);
         } catch (Exception e) {
-            // If email sending fails, we'll keep the user but mark them as unverified
-            // This way they can request a new verification email later
             createUser.setVerified(false);
             userRepository.save(createUser);
             throw new RuntimeException("Failed to send verification email. Please try again later.");

@@ -1,9 +1,14 @@
 package hcmute.edu.vn.controller.partner;
 
+import hcmute.edu.vn.converter.VoucherConverter;
 import hcmute.edu.vn.dto.VoucherDto;
+import hcmute.edu.vn.dto.response.PageResponse;
+import hcmute.edu.vn.dto.response.VoucherResponse;
+import hcmute.edu.vn.model.Voucher;
 import hcmute.edu.vn.service.VoucherService;
 import hcmute.edu.vn.service.impl.VoucherServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,15 +21,12 @@ import static hcmute.edu.vn.service.impl.VoucherServiceImpl.getVoucherDto;
 @RequiredArgsConstructor
 public class VoucherController {
     private final VoucherService voucherService;
+    private final VoucherConverter voucherConverter;
 
     @GetMapping
-    public ResponseEntity<List<VoucherDto>> loadVouchers(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<?> loadVouchers(@RequestParam(defaultValue = "0") int page,
                                                          @RequestParam(defaultValue = "10") int size) {
-        List<VoucherDto> vouchers = voucherService.getVouchers(page,size).getContent().stream()
-                .map(
-                        VoucherServiceImpl::getVoucherDto
-                ).toList();
-
+        PageResponse<VoucherResponse> vouchers = voucherService.getVouchers(page,size);
         return ResponseEntity.ok(vouchers);
     }
 
