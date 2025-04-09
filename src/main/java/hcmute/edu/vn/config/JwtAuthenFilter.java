@@ -45,7 +45,7 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
                        .getBody();
 
                // get email and authorities from claims
-               String email = String.valueOf(claims.get("email"));
+               String email = String.valueOf(claims.getSubject());
                String role = String.valueOf(claims.get("role"));
 
                // save email and authorities to security context

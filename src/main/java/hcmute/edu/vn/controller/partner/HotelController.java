@@ -1,13 +1,20 @@
 package hcmute.edu.vn.controller.partner;
 
 import hcmute.edu.vn.dto.HotelDto;
+import hcmute.edu.vn.dto.request.HotelRequest;
+import hcmute.edu.vn.dto.response.HotelResponse;
+import hcmute.edu.vn.dto.response.PageResponse;
 import hcmute.edu.vn.model.Hotel;
 import hcmute.edu.vn.service.HotelService;
 import hcmute.edu.vn.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/partner/hotels")
@@ -17,19 +24,32 @@ public class HotelController {
 
     @GetMapping
     public ResponseEntity<?> getAllHotels(@RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "1") int size) {
-        return ResponseEntity.ok(hotelService.getHotels(page, size).getContent());
+                                          @RequestParam(defaultValue = "10") int size) {
+        PageResponse<HotelResponse> hotelsData = hotelService.getHotels(page, size);
+        return ResponseEntity.ok(hotelsData);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createHotel(@RequestParam("file") MultipartFile file,
-                                         @ModelAttribute HotelDto hotelDto){
+    public ResponseEntity<?> createHotel(@RequestBody HotelRequest hotelRequest){
         try{
-            String urlPicture = ImageUtils.getSavedUrl(file);
-            hotelDto.setPicture(urlPicture);
-
-            Hotel hotel = hotelService.createHotel(hotelDto);
+            Hotel hotel = hotelService.createHotel(hotelRequest);
             return ResponseEntity.ok(hotel);
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/create/{hotelId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadHotelImages(@PathVariable Long hotelId,
+                                               @RequestParam("images") List<MultipartFile> images) {
+        try {
+            List<String> imageUrls = new ArrayList<>();
+            for (MultipartFile image : images) {
+                String imageUrl = ImageUtils.getSavedUrl(image);
+                imageUrls.add(imageUrl);
+            }
+            hotelService.saveImages(hotelId, imageUrls);
+            return ResponseEntity.ok("Images uploaded successfully");
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
