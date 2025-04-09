@@ -53,6 +53,9 @@ public class AuthServiceImpl implements AuthService {
 
         // Convert SignupRequest to User entity
         User createUser = new Customer();
+        createUser.setEmail(req.getEmail());
+        createUser.setFirstName(req.getFirstName());
+        createUser.setLastName(req.getLastName());
         createUser.setPassword(passwordEncoder.encode(req.getPassword()));
         createUser.setRole(role);
         userRepository.save(createUser);

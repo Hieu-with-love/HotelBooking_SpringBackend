@@ -1,12 +1,18 @@
 package hcmute.edu.vn.service;
 
 import hcmute.edu.vn.dto.HotelDto;
+import hcmute.edu.vn.dto.request.HotelRequest;
+import hcmute.edu.vn.dto.response.HotelResponse;
+import hcmute.edu.vn.dto.response.PageResponse;
 import hcmute.edu.vn.model.Hotel;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface HotelService {
-    Page<Hotel> getHotels(int offset, int limit);
-    Hotel createHotel(HotelDto hotelDto);
+    PageResponse<HotelResponse> getHotels(int offset, int limit);
+    Hotel createHotel(HotelRequest hotelRequest);
     Hotel updateHotel(Long hotelId, HotelDto hotel);
     void deleteHotel(Long id);
+    void saveImages(Long hotelId, List<String> images);
 }
