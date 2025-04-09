@@ -18,6 +18,6 @@ public class HotelImage {
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 }
