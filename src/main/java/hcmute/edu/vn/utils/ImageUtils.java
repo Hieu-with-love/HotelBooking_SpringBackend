@@ -38,7 +38,7 @@ public class ImageUtils {
             throw new IOException("Error saving image" + ex.getMessage());
         }
 
-        return "/uploads/" + newFileName;
+        return newFileName;
     }
 
     private static boolean isValidExtension(String extension){

@@ -3,6 +3,7 @@ package hcmute.edu.vn.service.impl;
 import hcmute.edu.vn.converter.HotelConverter;
 import hcmute.edu.vn.dto.HotelDto;
 import hcmute.edu.vn.dto.request.HotelRequest;
+import hcmute.edu.vn.dto.response.HotelBasicResponse;
 import hcmute.edu.vn.dto.response.HotelResponse;
 import hcmute.edu.vn.dto.response.PageResponse;
 import hcmute.edu.vn.enums.ESERVICE;
@@ -40,6 +41,18 @@ public class HotelServiceImpl implements HotelService {
         Page<Hotel> hotels = hotelRepository.findAll(pageable);
         // if we want to sort the result, we can use Sort object to pass to PageRequest.of(offset, limit, sort)
         return hotelConverter.toPageResponse(hotels);
+    }
+
+    @Override
+    public List<HotelBasicResponse> getPopularHotels() {
+        // Get the top 5 hotels with the most rooms
+        List<Hotel> hotels = hotelRepository.findAll();
+
+        if (!hotels.isEmpty() && hotels.size() > 5){
+            List<Hotel> subHotels = hotels.subList(0, 5);
+            return hotelConverter.toBasicHotelsList(subHotels);
+        }
+        return hotelConverter.toBasicHotelsList(hotels);
     }
 
     @Override
@@ -104,17 +117,16 @@ public class HotelServiceImpl implements HotelService {
                 .orElseThrow(() -> new RuntimeException("Hotel not found with id " + hotelId));
         List<HotelImage> hotelImages = new ArrayList<>();
 
+        hotel.getImages().clear();
+
         // Save each image to the database and associate it with the hotel
         for (String imageUrl : images) {
             HotelImage hotelImage = new HotelImage();
             hotelImage.setUrl(imageUrl);
-            hotelImage.setHotel(hotel);
-            hotel.getImages().add(hotelImage);
             hotelImages.add(hotelImage);
-            hotelImageRepository.save(hotelImage);
         }
 
-        hotel.setImages(hotelImages);
+        hotel.getImages().addAll(hotelImages);
         hotelRepository.save(hotel);
     }
 }

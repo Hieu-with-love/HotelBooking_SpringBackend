@@ -2,6 +2,7 @@ package hcmute.edu.vn.converter;
 
 import hcmute.edu.vn.controller.partner.HotelController;
 import hcmute.edu.vn.dto.request.HotelRequest;
+import hcmute.edu.vn.dto.response.HotelBasicResponse;
 import hcmute.edu.vn.dto.response.HotelResponse;
 import hcmute.edu.vn.dto.response.PageResponse;
 import hcmute.edu.vn.model.Hotel;
@@ -39,5 +40,15 @@ public interface HotelConverter {
                 .last(page.isLast())
                 .first(page.isFirst())
                 .build();
+    }
+
+    default List<HotelBasicResponse> toBasicHotelsList(List<Hotel> hotels){
+        return hotels.stream()
+                .map(hotel -> {
+                    HotelBasicResponse hotelBasicResponse = new HotelBasicResponse();
+                    hotelBasicResponse.setName(hotel.getName());
+                    hotelBasicResponse.setAddress(hotel.getAddress());
+                    return hotelBasicResponse;
+                }).toList();
     }
 }
