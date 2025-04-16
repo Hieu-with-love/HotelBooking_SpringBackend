@@ -117,16 +117,25 @@ public class HotelServiceImpl implements HotelService {
                 .orElseThrow(() -> new RuntimeException("Hotel not found with id " + hotelId));
         List<HotelImage> hotelImages = new ArrayList<>();
 
-        hotel.getImages().clear();
-
         // Save each image to the database and associate it with the hotel
         for (String imageUrl : images) {
             HotelImage hotelImage = new HotelImage();
             hotelImage.setUrl(imageUrl);
+            hotelImage.setHotel(hotel);
             hotelImages.add(hotelImage);
         }
 
         hotel.getImages().addAll(hotelImages);
         hotelRepository.save(hotel);
+    }
+
+    @Override
+    public HotelResponse getHotelDetailsById(Long hotelId) {
+        Hotel hotel = hotelRepository.findById(hotelId)
+                .orElseThrow(() -> new RuntimeException("Hotel not found with id " + hotelId));
+
+        HotelResponse hotelResponse = hotelConverter.toResponse(hotel);
+
+        return hotelResponse;
     }
 }

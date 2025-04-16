@@ -17,4 +17,6 @@ public interface HotelService {
     Hotel updateHotel(Long hotelId, HotelDto hotel);
     void deleteHotel(Long id);
     void saveImages(Long hotelId, List<String> images);
+
+    HotelResponse getHotelDetailsById(Long hotelId);
 }

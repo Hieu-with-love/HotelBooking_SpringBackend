@@ -1,5 +1,6 @@
 package hcmute.edu.vn.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import hcmute.edu.vn.enums.EROOMTYPE;
 import hcmute.edu.vn.enums.ESERVICE;
 import hcmute.edu.vn.enums.EROOMSTATUS;
@@ -38,8 +39,8 @@ public class Room {
 
     private EROOMTYPE type = EROOMTYPE.SINGLE;
 
-
-    @ElementCollection
+    @ElementCollection(targetClass = ESERVICE.class)
+    @Enumerated(EnumType.STRING)
     private List<ESERVICE> services;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -47,5 +48,11 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    @JsonBackReference
     private Hotel hotel;
+
+    public void addImage(RoomImage image){
+        images.add(image);
+        image.setRoom(this);
+    }
 }

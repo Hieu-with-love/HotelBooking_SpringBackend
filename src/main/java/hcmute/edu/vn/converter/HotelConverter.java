@@ -25,7 +25,12 @@ public interface HotelConverter {
 
     default List<HotelResponse> toResponseList(List<Hotel> hotels){
         return hotels.stream()
-                .map(this::toResponse)
+                .map(hotel -> {
+                    HotelResponse hotelResponse = toResponse(hotel);
+                    hotelResponse.setId(hotel.getId());
+                    hotel.setImages(hotel.getImages());
+                    return hotelResponse;
+                })
                 .toList();
     }
 
