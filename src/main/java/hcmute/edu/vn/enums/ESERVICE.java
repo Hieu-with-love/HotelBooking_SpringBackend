@@ -8,4 +8,6 @@ public enum ESERVICE {
     SPA,
     RESTAURANT,
     GYM,
+    BREAKFAST, SWIMMING_POOL,
+
 }

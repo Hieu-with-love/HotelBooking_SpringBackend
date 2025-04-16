@@ -75,9 +75,4 @@ public class HotelController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
-
-    @GetMapping("/popular")
-    public ResponseEntity<?> getPopularHotels(){
-        return ResponseEntity.ok(hotelService.getPopularHotels());
-    }
 }

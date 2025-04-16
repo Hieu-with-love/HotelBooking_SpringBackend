@@ -1,10 +1,12 @@
 package hcmute.edu.vn.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import hcmute.edu.vn.enums.ESERVICE;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Entity
 @Table(name = "hotels")
+@ToString(exclude = {"rooms", "partner", "address"})
 public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,13 +45,16 @@ public class Hotel {
     private BigDecimal maxPriceRange;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<HotelImage> images = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JsonManagedReference
     private Address address;
 
     @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Room> rooms = new ArrayList<>();
 
     @ManyToOne
@@ -57,4 +63,9 @@ public class Hotel {
     @ElementCollection(targetClass = ESERVICE.class)
     @Enumerated(EnumType.STRING)
     private List<ESERVICE> services = new ArrayList<>();
+
+    public void addRoom(Room room){
+        this.rooms.add(room);
+        room.setHotel(this);
+    }
 }
