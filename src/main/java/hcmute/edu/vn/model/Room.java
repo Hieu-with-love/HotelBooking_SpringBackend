@@ -35,8 +35,10 @@ public class Room {
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
     private EROOMSTATUS status = EROOMSTATUS.AVAILABLE;
 
+    @Enumerated(EnumType.STRING)
     private EROOMTYPE type = EROOMTYPE.SINGLE;
 
     @ElementCollection(targetClass = ESERVICE.class)

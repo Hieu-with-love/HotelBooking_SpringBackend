@@ -3,6 +3,7 @@ package hcmute.edu.vn.converter;
 import hcmute.edu.vn.controller.partner.HotelController;
 import hcmute.edu.vn.dto.request.HotelRequest;
 import hcmute.edu.vn.dto.response.HotelBasicResponse;
+import hcmute.edu.vn.dto.response.HotelDetailsResponse;
 import hcmute.edu.vn.dto.response.HotelResponse;
 import hcmute.edu.vn.dto.response.PageResponse;
 import hcmute.edu.vn.model.Hotel;
@@ -22,6 +23,7 @@ public interface HotelConverter {
     Voucher toVoucher(HotelRequest hotelRequest);
 
     HotelResponse toResponse(Hotel hotel);
+    HotelDetailsResponse toHotelDetailsResponse(Hotel hotel);
 
     default List<HotelResponse> toResponseList(List<Hotel> hotels){
         return hotels.stream()

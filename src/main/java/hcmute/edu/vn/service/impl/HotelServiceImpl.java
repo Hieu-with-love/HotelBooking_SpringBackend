@@ -4,14 +4,12 @@ import hcmute.edu.vn.converter.HotelConverter;
 import hcmute.edu.vn.dto.HotelDto;
 import hcmute.edu.vn.dto.request.HotelRequest;
 import hcmute.edu.vn.dto.response.HotelBasicResponse;
+import hcmute.edu.vn.dto.response.HotelDetailsResponse;
 import hcmute.edu.vn.dto.response.HotelResponse;
 import hcmute.edu.vn.dto.response.PageResponse;
 import hcmute.edu.vn.enums.ESERVICE;
 import hcmute.edu.vn.model.*;
-import hcmute.edu.vn.repository.AddressRepository;
-import hcmute.edu.vn.repository.HotelImageRepository;
-import hcmute.edu.vn.repository.HotelRepository;
-import hcmute.edu.vn.repository.UserRepository;
+import hcmute.edu.vn.repository.*;
 import hcmute.edu.vn.service.HotelService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +30,7 @@ public class HotelServiceImpl implements HotelService {
     private final HotelConverter hotelConverter;
     private final HotelImageRepository hotelImageRepository;
     private final UserRepository userRepository;
+    private final ReviewRepository reviewRepository;
 
     @Override
     public PageResponse<HotelResponse> getHotels(int offset, int limit) {
@@ -130,12 +129,34 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public HotelResponse getHotelDetailsById(Long hotelId) {
+    public HotelDetailsResponse getHotelDetailsById(Long hotelId) {
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new RuntimeException("Hotel not found with id " + hotelId));
 
-        HotelResponse hotelResponse = hotelConverter.toResponse(hotel);
+        HotelDetailsResponse hotelDetailsResponse = hotelConverter.toHotelDetailsResponse(hotel);
 
-        return hotelResponse;
+        List<List<Review>> roomsReviews = new ArrayList<>();
+        for (Room room : hotel.getRooms()) {
+            List<Review> roomReviews = reviewRepository.findReviewsByRoomId(room.getId());
+            roomsReviews.add(roomReviews);
+        }
+        hotelDetailsResponse.setReviews(roomsReviews);
+
+        double ratings = 0;
+        int count = 0;
+        // Tính tổng rating và số lượng đánh giá
+                for (List<Review> roomReviews : roomsReviews) {
+                    for (Review review : roomReviews) {
+                        ratings += review.getRatings(); // Giả sử Review có phương thức getRating()
+                        count++;
+                    }
+                }
+        // Tính rating trung bình
+        double averageRating = count > 0 ? ratings / count : 0;
+        // Thiết lập rating trung bình cho khách sạn
+        hotelDetailsResponse.setTotalRatings(averageRating);
+        hotelDetailsResponse.setTotalReviews(count);
+
+        return hotelDetailsResponse;
     }
 }

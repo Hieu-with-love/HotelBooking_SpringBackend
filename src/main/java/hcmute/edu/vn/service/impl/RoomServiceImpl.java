@@ -3,13 +3,17 @@ package hcmute.edu.vn.service.impl;
 import hcmute.edu.vn.converter.RoomConverter;
 import hcmute.edu.vn.dto.RoomDto;
 import hcmute.edu.vn.dto.request.RoomRequest;
+import hcmute.edu.vn.dto.request.SearchRoomsCriteria;
 import hcmute.edu.vn.dto.response.HotelResponse;
 import hcmute.edu.vn.dto.response.PageResponse;
+import hcmute.edu.vn.dto.response.RoomDetailsResponse;
 import hcmute.edu.vn.dto.response.RoomResponse;
 import hcmute.edu.vn.model.Hotel;
+import hcmute.edu.vn.model.Review;
 import hcmute.edu.vn.model.Room;
 import hcmute.edu.vn.model.RoomImage;
 import hcmute.edu.vn.repository.HotelRepository;
+import hcmute.edu.vn.repository.ReviewRepository;
 import hcmute.edu.vn.repository.RoomImageRepository;
 import hcmute.edu.vn.repository.RoomRepository;
 import hcmute.edu.vn.service.RoomService;
@@ -29,6 +33,7 @@ public class RoomServiceImpl implements RoomService {
     private final RoomConverter roomConverter;
     private final HotelRepository hotelRepository;
     private final RoomImageRepository roomImageRepository;
+    private final ReviewRepository reviewRepository;
 
     @Override
     public PageResponse<RoomResponse> getAllRooms(int page, int size) {
@@ -43,6 +48,25 @@ public class RoomServiceImpl implements RoomService {
 
         return roomRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Room not found"));
+    }
+
+    @Override
+    public RoomDetailsResponse getRoomDetailsById(Long id) {
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Room not found"));
+
+        RoomDetailsResponse roomDetailsResponse = roomConverter.toRoomDetailsResponse(room);
+
+        List<Review> reviews = reviewRepository.findReviewsByRoomId(room.getId());
+        double ratingSum = reviews.stream()
+                .mapToDouble(Review::getRatings)
+                .sum();
+        int count = reviews.size();
+        double totalRating = count == 0 ? 0 : ratingSum / count;
+        roomDetailsResponse.setTotalRating(totalRating);
+        roomDetailsResponse.setTotalReviews(count);
+
+        return roomDetailsResponse;
     }
 
     @Override
@@ -89,5 +113,12 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void deleteRoom(Long id) {
 
+    }
+
+    @Override
+    public List<RoomDetailsResponse> getRoomsByCriteria(SearchRoomsCriteria criteria) {
+        List<Room> searchedRoom = roomRepository.findRoomsByCriteria(criteria);
+
+        return roomConverter.toRoomDetailsResponseList(searchedRoom);
     }
 }

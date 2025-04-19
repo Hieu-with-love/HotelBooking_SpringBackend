@@ -4,6 +4,7 @@ import hcmute.edu.vn.dto.request.HotelRequest;
 import hcmute.edu.vn.dto.request.RoomRequest;
 import hcmute.edu.vn.dto.response.HotelResponse;
 import hcmute.edu.vn.dto.response.PageResponse;
+import hcmute.edu.vn.dto.response.RoomDetailsResponse;
 import hcmute.edu.vn.dto.response.RoomResponse;
 import hcmute.edu.vn.model.Room;
 import org.mapstruct.Mapper;
@@ -21,10 +22,17 @@ public interface RoomConverter {
     Room toRoom(RoomRequest roomRequest);
 
     RoomResponse toRoomResponse(Room room);
+    RoomDetailsResponse toRoomDetailsResponse(Room room);
 
     default List<RoomResponse> toRoomResponseList(List<Room> rooms){
         return rooms.stream()
                 .map(this::toRoomResponse)
+                .toList();
+    }
+
+    default List<RoomDetailsResponse> toRoomDetailsResponseList(List<Room> rooms){
+        return rooms.stream()
+                .map(this::toRoomDetailsResponse)
                 .toList();
     }
 

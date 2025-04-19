@@ -3,6 +3,7 @@ package hcmute.edu.vn.service;
 import hcmute.edu.vn.dto.HotelDto;
 import hcmute.edu.vn.dto.request.HotelRequest;
 import hcmute.edu.vn.dto.response.HotelBasicResponse;
+import hcmute.edu.vn.dto.response.HotelDetailsResponse;
 import hcmute.edu.vn.dto.response.HotelResponse;
 import hcmute.edu.vn.dto.response.PageResponse;
 import hcmute.edu.vn.model.Hotel;
@@ -18,5 +19,6 @@ public interface HotelService {
     void deleteHotel(Long id);
     void saveImages(Long hotelId, List<String> images);
 
-    HotelResponse getHotelDetailsById(Long hotelId);
+    HotelDetailsResponse getHotelDetailsById(Long hotelId);
+
 }

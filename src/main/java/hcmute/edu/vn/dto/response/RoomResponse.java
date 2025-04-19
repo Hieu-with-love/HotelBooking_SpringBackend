@@ -6,12 +6,12 @@ import java.math.BigDecimal;
 
 @Data
 public class RoomResponse {
-    private Long id;
-    private String name;
-    private String description;
-    private int numberOfAdults;
-    private int numberOfChildren;
-    private int numberOfBeds;
-    private BigDecimal price;
+    protected Long id;
+    protected String name;
+    protected String description;
+    protected int numberOfAdults;
+    protected int numberOfChildren;
+    protected int numberOfBeds;
+    protected String price;
 
 }
