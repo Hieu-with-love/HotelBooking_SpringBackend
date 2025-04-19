@@ -9,21 +9,21 @@ import java.util.List;
 
 @Data
 public class HotelResponse {
-    private Long id;
-    private String name;
-    private String businessName;
-    private Address address;
-    private String description;
-    private String phone;
-    private String email;
-    private String website;
-    private String facebook;
-    private String instagram;
-    private String twitter;
-    private String linkedin;
-    private String tiktok;
+    protected Long id;
+    protected String name;
+    protected String businessName;
+    protected Address address;
+    protected String description;
+    protected String phone;
+    protected String email;
+    protected String website;
+    protected String facebook;
+    protected String instagram;
+    protected String twitter;
+    protected String linkedin;
+    protected String tiktok;
 
-    private List<HotelImage> images;
-    private List<Room> rooms;
-    private List<String> services;
+    protected List<HotelImage> images;
+    protected List<Room> rooms;
+    protected List<String> services;
 }
