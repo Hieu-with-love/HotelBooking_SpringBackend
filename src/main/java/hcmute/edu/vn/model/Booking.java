@@ -1,5 +1,7 @@
 package hcmute.edu.vn.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,9 +34,23 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
-
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<BookingDetail> bookingDetails;
+
+    private String status;
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", checkIn='" + checkIn + '\'' +
+                ", checkOut='" + checkOut + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }
