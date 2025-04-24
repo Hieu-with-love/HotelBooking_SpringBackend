@@ -1,5 +1,6 @@
 package hcmute.edu.vn.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class RoomImage {
 
     @ManyToOne
     @JoinColumn(name = "room_id", referencedColumnName = "id")
+    @JsonBackReference
     private Room room;
 }
 

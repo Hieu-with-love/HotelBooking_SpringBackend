@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class RoomRequest {
+    private Long id;
     private String name;
     private String description;
     private int numberOfAdults;

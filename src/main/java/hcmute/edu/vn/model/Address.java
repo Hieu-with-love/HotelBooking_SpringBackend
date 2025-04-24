@@ -24,5 +24,4 @@ public class Address {
     private String district;
 
     private String city;
-
 }

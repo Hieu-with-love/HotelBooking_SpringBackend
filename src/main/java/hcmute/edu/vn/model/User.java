@@ -1,5 +1,6 @@
 package hcmute.edu.vn.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import hcmute.edu.vn.enums.ENATION;
 import hcmute.edu.vn.enums.EROLE;
 import jakarta.persistence.*;
@@ -47,6 +48,7 @@ public class User {
     protected boolean status;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     protected List<Booking> bookings;
 
     @OneToOne(mappedBy = "user")
@@ -59,4 +61,14 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "voucher_id")
     )
     protected List<Voucher> vouchers;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }

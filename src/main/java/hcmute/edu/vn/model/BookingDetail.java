@@ -12,7 +12,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "booking_detail")
+@Entity
+@Table(name = "booking_details")
 public class BookingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +29,4 @@ public class BookingDetail {
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
-
-
 }

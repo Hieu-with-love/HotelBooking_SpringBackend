@@ -20,7 +20,7 @@ public class RoomController {
     @GetMapping
     public ResponseEntity<?> loadRooms(@RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size) {
-        return null;
+        return ResponseEntity.ok(roomService.getAllRooms(page, size));
     }
 
     @PostMapping("/create")

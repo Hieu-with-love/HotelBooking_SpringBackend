@@ -11,7 +11,6 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class RoomDetailsResponse extends RoomResponse{
-    private List<RoomImage> roomImages;
     private List<ESERVICE> services;
     private List<Review> reviews;
     private double totalRating;

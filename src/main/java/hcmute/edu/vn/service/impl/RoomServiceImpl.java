@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,6 +88,7 @@ public class RoomServiceImpl implements RoomService {
         try{
             Room exstingRoom = roomRepository.findById(roomId)
                     .orElseThrow(() -> new RuntimeException("Room not found"));
+            List<RoomImage> roomImagesList = new ArrayList<>();
 
             imageUrls.forEach(imageUrl -> {
                 RoomImage roomImage = new RoomImage();
@@ -119,6 +121,24 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomDetailsResponse> getRoomsByCriteria(SearchRoomsCriteria criteria) {
         List<Room> searchedRoom = roomRepository.findRoomsByCriteria(criteria);
 
-        return roomConverter.toRoomDetailsResponseList(searchedRoom);
+        List<Room> cloningSearchedRoom =  searchedRoom.stream()
+                .map(room -> {
+                    Room clone = new Room();
+                    clone.setId(room.getId());
+                    clone.setName(room.getName());
+                    clone.setNumberOfAdults(room.getNumberOfAdults());
+                    clone.setNumberOfChildren(room.getNumberOfChildren());
+                    clone.setNumberOfBeds(room.getNumberOfBeds());
+                    clone.setPrice(room.getPrice());
+                    clone.setDescription(room.getDescription());
+                    clone.setHotel(room.getHotel());
+                    clone.setServices(room.getServices());
+
+                    List<RoomImage> roomImage = roomImageRepository.findRoomImagesByRoomId(room.getId());
+                    clone.setImages(roomImage);
+                    return clone;
+                }).toList();
+
+        return roomConverter.toRoomDetailsResponseList(cloningSearchedRoom);
     }
 }
