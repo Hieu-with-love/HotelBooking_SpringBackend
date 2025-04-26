@@ -5,9 +5,9 @@ server:
 # config spring datasource
 spring:
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATASOURCE_USER}
-    password: ${DATASOURCE_PASSWORD}
+    url: jdbc:mysql://root:QzsxLXCzlGsNWIfzRiuFVUnirKPZRgHj@switchback.proxy.rlwy.net:34125/railway
+    username: root
+    password: QzsxLXCzlGsNWIfzRiuFVUnirKPZRgHj
   servlet:
     multipart:
       enabled: true
