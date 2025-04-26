@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("https://hotel-booking-zeta-azure.vercel.app")
 @RestController
 @RequestMapping("/api/customer/hotels")
 @RequiredArgsConstructor

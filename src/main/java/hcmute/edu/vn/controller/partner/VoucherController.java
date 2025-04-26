@@ -16,6 +16,7 @@ import java.util.List;
 
 import static hcmute.edu.vn.service.impl.VoucherServiceImpl.getVoucherDto;
 
+@CrossOrigin("https://hotel-booking-zeta-azure.vercel.app")
 @RestController
 @RequestMapping("/api/partner/vouchers")
 @RequiredArgsConstructor
