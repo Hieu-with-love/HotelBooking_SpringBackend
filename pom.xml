@@ -13,6 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>HotelBooking</name>
 	<description>This project is final project of OOSE course</description>
+	<packaging>war</packaging>
 	<url/>
 	<licenses>
 		<license/>
