@@ -51,7 +51,7 @@
                 @Override
                 public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                     CorsConfiguration cfg = new CorsConfiguration();
-                    cfg.addAllowedOrigin(frontendUrl);
+                    cfg.addAllowedOrigin("https://hotel-booking-zeta-azure.vercel.app");
                     cfg.addAllowedHeader("*");
                     cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
                     cfg.setAllowCredentials(true);
