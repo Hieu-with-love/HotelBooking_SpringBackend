@@ -11,12 +11,11 @@ import org.mapstruct.factory.Mappers;
 public interface UserConverter {
     UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
 
-//    @Mapping(target = "password", ignore = true)
-//    @Mapping(target = "id", ignore = true)
-//    @Mapping(target = "isVerified", constant = "false")
-//    @Mapping(target = "status", constant = "true")
-//    User toEntity(SignupRequest signupRequest);
-//
-//    @Mapping(target = "password", ignore = true)
-//    UserResponse toResponse(User user);
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "status", constant = "true")
+    User toEntity(SignupRequest signupRequest);
+
+    UserResponse toResponse(User user);
+
 } 

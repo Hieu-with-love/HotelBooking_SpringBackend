@@ -14,4 +14,5 @@ public class BookingResponse {
     private List<RoomResponse> selectedRooms;
     private String checkInDate;
     private String checkOutDate;
+    private UserResponse user;
 }

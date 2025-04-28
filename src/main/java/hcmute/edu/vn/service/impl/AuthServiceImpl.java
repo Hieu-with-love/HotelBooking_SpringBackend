@@ -4,6 +4,7 @@ import hcmute.edu.vn.config.JwtProvider;
 import hcmute.edu.vn.converter.UserConverter;
 import hcmute.edu.vn.dto.request.EmailDetails;
 import hcmute.edu.vn.dto.request.SignupRequest;
+import hcmute.edu.vn.dto.response.UserResponse;
 import hcmute.edu.vn.enums.EROLE;
 import hcmute.edu.vn.model.Customer;
 import hcmute.edu.vn.model.User;
@@ -32,6 +33,15 @@ public class AuthServiceImpl implements AuthService {
     private final EmailService emailService;
     private final CustomUserDetailService customUserDetailService;
     private final UserConverter userConverter;
+
+    @Override
+    public UserResponse getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email " + email));
+
+        return userConverter.toResponse(user);
+    }
 
     @Override
     @Transactional
