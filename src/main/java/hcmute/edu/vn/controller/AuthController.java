@@ -89,4 +89,9 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/current-user")
+    public ResponseEntity<?> getUserByJwt(){
+        return ResponseEntity.ok(authService.getCurrentUser());
+    }
+
 }
