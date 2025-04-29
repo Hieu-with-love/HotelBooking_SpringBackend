@@ -2,9 +2,11 @@ package hcmute.edu.vn.controller.partner;
 
 import hcmute.edu.vn.dto.HotelDto;
 import hcmute.edu.vn.dto.request.HotelRequest;
+import hcmute.edu.vn.dto.response.CloudinaryResponse;
 import hcmute.edu.vn.dto.response.HotelResponse;
 import hcmute.edu.vn.dto.response.PageResponse;
 import hcmute.edu.vn.model.Hotel;
+import hcmute.edu.vn.service.CloudinaryService;
 import hcmute.edu.vn.service.HotelService;
 import hcmute.edu.vn.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HotelController {
     private final HotelService hotelService;
+    private final CloudinaryService cloudinaryService;
 
     @GetMapping
     public ResponseEntity<?> getAllHotels(@RequestParam(defaultValue = "0") int page,
@@ -46,8 +49,8 @@ public class HotelController {
         try {
             List<String> imageUrls = new ArrayList<>();
             for (MultipartFile image : images) {
-                String imageUrl = ImageUtils.getSavedUrl(image);
-                imageUrls.add(imageUrl);
+                CloudinaryResponse imageUrl = cloudinaryService.uploadFile(image, image.getOriginalFilename(), "hotel-images");
+                imageUrls.add(imageUrl.getUrl());
             }
             hotelService.saveImages(hotelId, imageUrls);
             return ResponseEntity.ok("Images uploaded successfully");

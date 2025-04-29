@@ -10,6 +10,7 @@ import hcmute.edu.vn.dto.response.PageResponse;
 import hcmute.edu.vn.enums.ESERVICE;
 import hcmute.edu.vn.model.*;
 import hcmute.edu.vn.repository.*;
+import hcmute.edu.vn.service.CloudinaryService;
 import hcmute.edu.vn.service.HotelService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,9 @@ public class HotelServiceImpl implements HotelService {
     private final HotelRepository hotelRepository;
     private final AddressRepository addressRepository;
     private final HotelConverter hotelConverter;
-    private final HotelImageRepository hotelImageRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
+    private CloudinaryService cloudinaryService;
 
     @Override
     public PageResponse<HotelResponse> getHotels(int offset, int limit) {
