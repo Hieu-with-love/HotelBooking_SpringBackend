@@ -35,7 +35,7 @@ public class VoucherServiceImpl implements VoucherService {
         voucherDto.setDiscountPercent(voucher.getDiscountPercent());
         voucherDto.setDiscountAmount(voucher.getDiscountAmount());
         voucherDto.setActive(voucher.isActive());
-        voucherDto.setCreatedAt(voucher.getCreatedAt());
+        voucherDto.setStartDate(voucher.getCreatedAt());
         voucherDto.setExpirationDate(voucher.getExpirationDate());
         voucherDto.setQuantity(voucher.getQuantity());
         return voucherDto;
@@ -56,6 +56,7 @@ public class VoucherServiceImpl implements VoucherService {
             createVoucher.setQuantity(voucherDto.getQuantity());
             createVoucher.setDiscountAmount(voucherDto.getDiscountAmount());
             createVoucher.setDiscountPercent(voucherDto.getDiscountPercent());
+            createVoucher.setCreatedAt(voucherDto.getStartDate());
             createVoucher.setExpirationDate(voucherDto.getExpirationDate());
             createVoucher.setActive(true);
             createVoucher.setCreatedAt(LocalDate.now());

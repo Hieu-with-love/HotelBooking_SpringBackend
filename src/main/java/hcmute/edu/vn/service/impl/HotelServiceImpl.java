@@ -90,13 +90,25 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Hotel updateHotel(Long hotelId, HotelDto hotelDto) {
+    public Hotel updateHotel(Long hotelId, HotelRequest hotelRequest) {
         Hotel existingHotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new RuntimeException("Hotel not found with id " + hotelId));
 
-        existingHotel.setName(hotelDto.getName());
-//        existingHotel.setPicture(hotelDto.getPicture());
-        existingHotel.getAddress().setNumber(hotelDto.getNumber());
+        existingHotel.setName(hotelRequest.getName());
+        existingHotel.setAddress(hotelRequest.getAddress());
+        existingHotel.setPhone(hotelRequest.getPhone());
+        existingHotel.setEmail(hotelRequest.getEmail());
+        existingHotel.setWebsite(hotelRequest.getSocialMedia().getWebsite());
+        existingHotel.setFacebook(hotelRequest.getSocialMedia().getFacebook());
+        existingHotel.setTwitter(hotelRequest.getSocialMedia().getTwitter());
+        existingHotel.setInstagram(hotelRequest.getSocialMedia().getInstagram());
+        existingHotel.setBusinessName(hotelRequest.getBusinessName());
+        existingHotel.setDescription(hotelRequest.getDescription());
+        existingHotel.setMinPriceRange(hotelRequest.getPriceRange().getMin());
+        existingHotel.setMaxPriceRange(hotelRequest.getPriceRange().getMax());
+        existingHotel.setServices(
+                hotelRequest.getServices()
+        );
 
         return hotelRepository.save(existingHotel);
     }

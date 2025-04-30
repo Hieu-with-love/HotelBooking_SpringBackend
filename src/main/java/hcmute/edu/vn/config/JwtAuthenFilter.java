@@ -18,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 public class JwtAuthenFilter extends OncePerRequestFilter {
@@ -60,10 +61,19 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
         filterChain.doFilter(req, res);
     }
 
-    private boolean isByPassToken(HttpServletRequest req){
-        List<String> byPassUrls = List.of("/api/auth/login", "/api/auth/signup");
-        String path = req.getRequestURI();
+    private final String[] allowedResources = {
+            "/api/auth/login",
+            "/api/auth/signup",
+            "/api/customer/hotels",
+            "/api/customer/hotels/{hotelId}",
+            "/api/customer/rooms/{roomId}",
+            "/api/customer/rooms",
+    };
 
-        return byPassUrls.contains(path);
+    private boolean isByPassToken(HttpServletRequest req) {
+        String path = req.getRequestURI();
+        return Arrays.stream(allowedResources)
+                .anyMatch(path::startsWith); // Cho phép các đường dẫn như /api/customer/hotels/123
     }
+
 }

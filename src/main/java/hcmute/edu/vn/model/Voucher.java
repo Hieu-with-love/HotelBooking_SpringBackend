@@ -30,7 +30,7 @@ public class Voucher {
     private boolean isActive;
 
     @Column(name = "created_at")
-    private LocalDate createdAt = LocalDate.now();
+    private LocalDate createdAt;
 
     @Column(name = "expiration_date")
     @Future(message = "Thời gian hết hạn phải ở trong tương lai")
