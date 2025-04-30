@@ -12,7 +12,7 @@ public class VoucherDto {
     private BigDecimal discountAmount;
     private double discountPercent;
     private int quantity;
-    private LocalDate createdAt;
+    private LocalDate startDate;
     private LocalDate expirationDate;
     private boolean isActive;
 }

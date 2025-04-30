@@ -50,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
         if (req.getRole()==null){
             role = EROLE.CUSTOMER;
         }else {
-            role = EROLE.valueOf(req.getRole());
+            role = EROLE.valueOf(req.getRole().toUpperCase());
         }
 
         if (userService.existsByEmail(req.getEmail())) {

@@ -27,6 +27,7 @@ public interface VoucherConverter {
         return vouchers.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+
     }
 
     default List<Voucher> toEntityList(List<VoucherRequest> voucherRequests) {

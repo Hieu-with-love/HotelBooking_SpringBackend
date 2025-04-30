@@ -33,6 +33,12 @@ public class HotelController {
         return ResponseEntity.ok(hotelsData);
     }
 
+    @GetMapping("/{hotelId}")
+    public ResponseEntity<?> getHotelById(@PathVariable("hotelId") Long hotelId) {
+        HotelResponse hotel = hotelService.getHotelDetailsById(hotelId);
+        return ResponseEntity.ok(hotel);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> createHotel(@RequestBody HotelRequest hotelRequest){
         try{
@@ -47,13 +53,17 @@ public class HotelController {
     public ResponseEntity<?> uploadHotelImages(@PathVariable Long hotelId,
                                                @RequestParam("images") List<MultipartFile> images) {
         try {
-            List<String> imageUrls = new ArrayList<>();
-            for (MultipartFile image : images) {
-                CloudinaryResponse imageUrl = cloudinaryService.uploadFile(image, image.getOriginalFilename(), "hotel-images");
-                imageUrls.add(imageUrl.getUrl());
+            if (images.isEmpty()) {
+                return ResponseEntity.badRequest().body("No images provided");
+            }else {
+                List<String> imageUrls = new ArrayList<>();
+                for (MultipartFile image : images) {
+                    CloudinaryResponse imageUrl = cloudinaryService.uploadFile(image, image.getOriginalFilename(), "hotel-images");
+                    imageUrls.add(imageUrl.getUrl());
+                }
+                hotelService.saveImages(hotelId, imageUrls);
+                return ResponseEntity.ok("Images uploaded successfully");
             }
-            hotelService.saveImages(hotelId, imageUrls);
-            return ResponseEntity.ok("Images uploaded successfully");
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
@@ -61,9 +71,9 @@ public class HotelController {
 
     @PutMapping("/update/{hotelId}")
     public ResponseEntity<?> updateHotel(@PathVariable("hotelId") Long hotelId,
-                                         @RequestBody HotelDto hotelDto){
+                                         @RequestBody HotelRequest hotelRequest){
         try{
-            Hotel hotel = hotelService.updateHotel(hotelId, hotelDto);
+            Hotel hotel = hotelService.updateHotel(hotelId, hotelRequest);
             return ResponseEntity.ok(hotel);
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(ex.getMessage());

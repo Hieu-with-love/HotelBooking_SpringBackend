@@ -25,6 +25,15 @@
         @Value("${frontend.url}")
         private String frontendUrl;
 
+        private final String[] allowedResources = {
+                "/api/auth/login",
+                "/api/auth/signup",
+                "/api/customer/hotels",
+                "/api/customer/hotels/{hotelId}",
+                "/api/customer/rooms/{roomId}",
+                "/api/customer/rooms",
+        };
+
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
             http.csrf(AbstractHttpConfigurer::disable)
@@ -36,10 +45,11 @@
                             .requestMatchers("/api/auth/signup").permitAll()
                             .requestMatchers("/api/auth/login").permitAll()
                             .requestMatchers("/api/auth/verify-account").permitAll()
-    //                        .requestMatchers("/api/customer/**").hasAnyRole("CUSTOMER", "LOYAL_CUSTOMER")
-    //                        .requestMatchers("/api/partner/**").hasRole("PARTNER")
-    //                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                                    .anyRequest().permitAll()
+                            .requestMatchers(allowedResources).permitAll()
+                            .requestMatchers("/api/customer/**").hasAnyRole("CUSTOMER", "LOYAL_CUSTOMER", "PARTNER")
+                            .requestMatchers("/api/partner/**").hasRole("PARTNER")
+                            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                    .anyRequest().authenticated()
                     );
 
             return http.build();

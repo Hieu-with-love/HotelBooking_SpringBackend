@@ -25,4 +25,5 @@ public class VoucherResponse {
     @JsonProperty("active")
     private boolean isActive;
     private Integer remainingQuantity;
+    private LocalDate createdAt;
 }
