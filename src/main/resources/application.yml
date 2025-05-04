@@ -4,11 +4,6 @@ server:
 
 # config spring datasource
 spring:
-  main:
-    lazy-initialization: true
-  devtools:
-    restart:
-      enabled: false
   datasource:
     url: jdbc:mysql://root:QzsxLXCzlGsNWIfzRiuFVUnirKPZRgHj@switchback.proxy.rlwy.net:34125/railway
     username: root
