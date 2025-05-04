@@ -4,6 +4,11 @@ server:
 
 # config spring datasource
 spring:
+  main:
+    lazy-initialization: true
+  devtools:
+    restart:
+      enabled: false
   datasource:
     url: jdbc:mysql://root:QzsxLXCzlGsNWIfzRiuFVUnirKPZRgHj@switchback.proxy.rlwy.net:34125/railway
     username: root
@@ -14,9 +19,7 @@ spring:
       max-file-size: 10MB
       max-request-size: 100MB
   jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+    open-in-view: false
   mail:
     host: smtp.gmail.com
     port: 587

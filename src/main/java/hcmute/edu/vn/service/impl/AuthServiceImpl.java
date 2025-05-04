@@ -46,6 +46,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public boolean signup(SignupRequest req) {
+        // TODO register USE CASE
         EROLE role;
         if (req.getRole()==null){
             role = EROLE.CUSTOMER;
@@ -70,8 +71,19 @@ public class AuthServiceImpl implements AuthService {
         createUser.setRole(role);
         userRepository.save(createUser);
 
+        // TODO verify email USE CASE
+        verifyEmail(createUser, req);
+
+        return true;
+    }
+
+    private void verifyEmail(User createUser, SignupRequest req){
         // Generate JWT token for verification
         String jwt = jwtProvider.generateToken(createUser.getEmail(), createUser.getRole().name());
+
+        if (jwt.isEmpty()){
+            throw new BadCredentialsException("Invalid jwt");
+        }
 
         // Send verification email with JWT token
         try {
@@ -82,15 +94,12 @@ public class AuthServiceImpl implements AuthService {
                     createUser.getLastName(),
                     createUser.getEmail(),
                     jwt));
-
             emailService.sendEmailToVerifyAccount(emailDetails);
         } catch (Exception e) {
             createUser.setVerified(false);
             userRepository.save(createUser);
             throw new RuntimeException("Failed to send verification email. Please try again later.");
         }
-
-        return true;
     }
 
     @Override
