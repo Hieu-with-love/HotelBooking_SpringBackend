@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin("https://hotel-booking-zeta-azure.vercel.app")
+@CrossOrigin("https://zotels-booking.id.vn/")
 @RestController
 @RequestMapping("/api/partner/rooms")
 @RequiredArgsConstructor
