@@ -14,7 +14,9 @@ spring:
       max-file-size: 10MB
       max-request-size: 100MB
   jpa:
-    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
   mail:
     host: smtp.gmail.com
     port: 587
