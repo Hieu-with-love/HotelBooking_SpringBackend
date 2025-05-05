@@ -16,7 +16,7 @@ import java.util.List;
 
 import static hcmute.edu.vn.service.impl.VoucherServiceImpl.getVoucherDto;
 
-@CrossOrigin("https://zotels-booking.id.vn/")
+@CrossOrigin("https://zotels-booking.id.vn")
 @RestController
 @RequestMapping("/api/partner/vouchers")
 @RequiredArgsConstructor
