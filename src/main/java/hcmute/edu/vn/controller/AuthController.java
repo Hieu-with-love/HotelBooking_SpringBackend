@@ -11,8 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("https://hotel-booking-zeta-azure.vercel.app")
-//@CrossOrigin("http://localhost:3000")
+@CrossOrigin("https://zotels-booking.id.vn")
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
