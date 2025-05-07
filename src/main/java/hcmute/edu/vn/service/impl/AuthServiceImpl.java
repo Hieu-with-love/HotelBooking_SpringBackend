@@ -58,6 +58,10 @@ public class AuthServiceImpl implements AuthService {
             throw new BadCredentialsException("Email already exists");
         }
 
+        if (userService.existsByPhone(req.getPhone())){
+            throw new BadCredentialsException("Phone already exists");
+        }
+
         if (!req.getPassword().equals(req.getConfirmPassword())) {
             throw new BadCredentialsException("Password not match");
         }
