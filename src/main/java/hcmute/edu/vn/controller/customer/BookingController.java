@@ -25,7 +25,7 @@ public class BookingController {
             BookingResponse bookingResponse = bookingService.convertToBookingResponse(booking);
             return ResponseEntity.ok(bookingResponse);
         }catch (Exception e){
-            return ResponseEntity.badRequest().body("Failed to create booking: " + e.getMessage());
+            return ResponseEntity.badRequest().body("");
         }
     }
 

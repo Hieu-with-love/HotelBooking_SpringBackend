@@ -67,8 +67,9 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // Convert SignupRequest to User entity
-        User createUser = new Customer();
+        User createUser = new User();
         createUser.setEmail(req.getEmail());
+        createUser.setPhoneNumber(req.getPhone());
         createUser.setFirstName(req.getFirstName());
         createUser.setLastName(req.getLastName());
         createUser.setPassword(passwordEncoder.encode(req.getPassword()));
@@ -142,6 +143,12 @@ public class AuthServiceImpl implements AuthService {
         }
         if (!passwordEncoder.matches(password, userDetails.getPassword())){
             throw new BadCredentialsException("Password not match");
+        }
+
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new BadCredentialsException("User not found"));
+        if (!user.isVerified()){
+            throw new BadCredentialsException("User is not verified");
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

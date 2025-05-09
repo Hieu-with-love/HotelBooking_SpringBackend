@@ -11,6 +11,7 @@ import hcmute.edu.vn.model.*;
 import hcmute.edu.vn.repository.*;
 import hcmute.edu.vn.service.BookingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,6 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
-    private final VoucherRepository voucherRepository;
     private final RoomRepository roomRepository;
     private final BookingDetailRepository bookingDetailRepository;
     private final PaymentRepository paymentRepository;
@@ -36,12 +36,12 @@ public class BookingServiceImpl implements BookingService {
     public Booking createBooking(BookingRequest request) {
         // 1. Validate and get payment method
         Payment payment = paymentRepository.findById(request.getPaymentMethod().getId())
-                .orElseThrow(() -> new RuntimeException("Payment method not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Payment method not found"));
 
         // 2. Get current user
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with email " + email));
+                .orElseThrow(() -> new BadCredentialsException("User not found with email " + email));
 
         // 3. Calculate total price
         BigDecimal totalPrice = calculateTotalPrice(request.getRooms());
