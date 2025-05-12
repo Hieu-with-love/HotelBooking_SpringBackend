@@ -13,7 +13,7 @@ public class BookingRequest {
     private int numberOfChildren;
     private String voucherCode;
     private String specialRequests;
-    private BigDecimal price;
+    private BigDecimal totalPrice;
     private List<RoomRequest> rooms;
     private PaymentRequest paymentMethod;
     private String status;
