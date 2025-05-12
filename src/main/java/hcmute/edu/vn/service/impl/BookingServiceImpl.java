@@ -6,7 +6,6 @@ import hcmute.edu.vn.dto.request.BookingRequest;
 import hcmute.edu.vn.dto.request.RoomRequest;
 import hcmute.edu.vn.dto.response.BookingResponse;
 import hcmute.edu.vn.dto.response.RoomResponse;
-import hcmute.edu.vn.dto.response.UserResponse;
 import hcmute.edu.vn.model.*;
 import hcmute.edu.vn.repository.*;
 import hcmute.edu.vn.service.BookingService;
@@ -16,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,14 +41,11 @@ public class BookingServiceImpl implements BookingService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new BadCredentialsException("User not found with email " + email));
 
-        // 3. Calculate total price
-        BigDecimal totalPrice = calculateTotalPrice(request.getRooms());
-
         // 4. Create and save the booking first
         Booking booking = new Booking();
         booking.setCheckIn(request.getCheckInDate());
         booking.setCheckOut(request.getCheckOutDate());
-        booking.setTotalPrice(totalPrice);
+        booking.setTotalPrice(request.getTotalPrice());
         booking.setSpecialRequest(request.getSpecialRequests());
         booking.setUser(user);
         booking.setPaymentType(payment);
@@ -66,17 +61,6 @@ public class BookingServiceImpl implements BookingService {
         bookingDetailRepository.saveAll(bookingDetails);
         
         return savedBooking;
-    }
-    
-    /**
-     * Calculate the total price for all rooms in the booking
-     */
-    private BigDecimal calculateTotalPrice(List<RoomRequest> rooms) {
-        BigDecimal totalPrice = BigDecimal.ZERO;
-        for (RoomRequest room : rooms) {
-            totalPrice = totalPrice.add(room.getPrice());
-        }
-        return totalPrice;
     }
     
     /**
@@ -123,4 +107,5 @@ public class BookingServiceImpl implements BookingService {
         bookingResponse.setUser(userConverter.toResponse(user));
         return bookingResponse;
     }
+
 }
