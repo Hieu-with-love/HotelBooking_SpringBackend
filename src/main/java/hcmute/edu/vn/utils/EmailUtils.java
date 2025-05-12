@@ -15,7 +15,7 @@ public class EmailUtils {
     public static String getVerifyAccountEmailBody(String name, String to, String token){
         return "Hello " + name + "\n\n"
                 + "Please verify your account by clicking the link below: \n"
-                + "http://localhost:8088/api/auth/verify-account?token=" + token + "\n\n"
+                + "https://zotelbooking.onrender.com/api/auth/verify-account?token=" + token + "\n\n"
                 + "If you did not request this, please ignore this email.\n"
                 + "Thank you!\n"
                 +"Supported by: 4 con ong";
