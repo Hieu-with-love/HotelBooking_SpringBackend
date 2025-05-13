@@ -5,6 +5,7 @@ import hcmute.edu.vn.dto.request.SignupRequest;
 import hcmute.edu.vn.dto.response.AuthResponse;
 import hcmute.edu.vn.service.AuthService;
 import hcmute.edu.vn.service.EmailService;
+import hcmute.edu.vn.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthService authService;
+    private final UserService userService;
     private final EmailService emailService;
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest req){
         try{
-            boolean registered = authService.signup(req);
+            boolean registered = userService.signup(req);
 
             AuthResponse authResponse = new AuthResponse();
             authResponse.setJwt("");
@@ -46,7 +47,7 @@ public class AuthController {
             String username = req.getEmail();
             String password = req.getPassword();
 
-            String jwt = authService.login(username, password);
+            String jwt = userService.login(username, password);
             AuthResponse authResponse = AuthResponse.builder()
                 .jwt(jwt)
                 .message("User logged in successfully")
@@ -62,7 +63,7 @@ public class AuthController {
     @GetMapping("/verify-account")
     public ResponseEntity<?> verifyAccount(@RequestParam("token") String token){
         try {
-            String jwt = authService.verifyAccount(token);
+            String jwt = userService.verifyAccount(token);
             return ResponseEntity.ok(AuthResponse.builder()
                     .message("Account verified successfully")
                             .jwt(jwt)
@@ -91,7 +92,7 @@ public class AuthController {
 
     @GetMapping("/current-user")
     public ResponseEntity<?> getUserByJwt(){
-        return ResponseEntity.ok(authService.getCurrentUser());
+        return ResponseEntity.ok(userService.getCurrentUser());
     }
 
 }
