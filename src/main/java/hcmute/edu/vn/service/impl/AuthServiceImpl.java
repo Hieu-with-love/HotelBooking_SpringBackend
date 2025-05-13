@@ -55,11 +55,15 @@ public class AuthServiceImpl implements AuthService {
         }
 
         if (userService.existsByEmail(req.getEmail())) {
-            throw new BadCredentialsException("Email already exists");
+            throw new BadCredentialsException("Email này đã được đăng ký. Vùi lòng nhập email khác");
         }
 
         if (userService.existsByPhone(req.getPhone())){
-            throw new BadCredentialsException("Phone already exists");
+            throw new BadCredentialsException("SĐT này đã được đăng kí. Vui lòng nhập số điện thoại khác");
+        }
+
+        if (!userService.validPassword(req.getPassword())){
+            throw new BadCredentialsException("Mật khẩu không hợp lệ. Vui lòng nhập lại.");
         }
 
         if (!req.getPassword().equals(req.getConfirmPassword())) {
