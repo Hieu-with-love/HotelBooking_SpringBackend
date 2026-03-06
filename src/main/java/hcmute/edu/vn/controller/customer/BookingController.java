@@ -21,7 +21,7 @@ public class BookingController {
     @PostMapping("/create")
     public ResponseEntity<?> createBooking(@RequestBody BookingRequest req){
         try{
-            Booking booking = bookingService.createBooking(req);
+            Booking booking = bookingService.createBookingApplySingleton(req);
             BookingResponse bookingResponse = bookingService.convertToBookingResponse(booking);
             return ResponseEntity.ok(bookingResponse);
         }catch (Exception e){

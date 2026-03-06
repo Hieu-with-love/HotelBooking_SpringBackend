@@ -61,8 +61,8 @@
                 @Override
                 public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                     CorsConfiguration cfg = new CorsConfiguration();
-                    cfg.addAllowedOrigin("https://zotels-booking.id.vn");
-//                    cfg.addAllowedOrigin("http://localhost:3000");
+//                    cfg.addAllowedOrigin("https://zotels-booking.id.vn");
+                    cfg.addAllowedOrigin("http://localhost:3000");
                     cfg.addAllowedHeader("*");
                     cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
                     cfg.setAllowCredentials(true);

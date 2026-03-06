@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(createUser);
 
         // TODO verify email USE CASE
-        verifyEmail(createUser, req);
+//        verifyEmail(createUser, req);
 
         return true;
     }
@@ -185,9 +185,9 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new BadCredentialsException("User not found"));
-        if (!user.isVerified()){
-            throw new BadCredentialsException("User is not verified");
-        }
+//        if (!user.isVerified()){
+//            throw new BadCredentialsException("User is not verified");
+//        }
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }

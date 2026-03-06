@@ -9,7 +9,10 @@ import hcmute.edu.vn.dto.response.RoomResponse;
 import hcmute.edu.vn.model.*;
 import hcmute.edu.vn.repository.*;
 import hcmute.edu.vn.service.BookingService;
+import hcmute.edu.vn.utils.BookingIdGenerator;
+import hcmute.edu.vn.utils.NonSingletonBookingIdGenerator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
@@ -31,7 +35,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public Booking createBooking(BookingRequest request) {
+    public Booking createBookingApplySingleton(BookingRequest request) {
         // 1. Validate and get payment method
         Payment payment = paymentRepository.findById(request.getPaymentMethod().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Payment method not found"));
@@ -41,8 +45,14 @@ public class BookingServiceImpl implements BookingService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new BadCredentialsException("User not found with email " + email));
 
+        // 3. Generate unique booking code using Thread-Safe Singleton
+        BookingIdGenerator idGenerator = BookingIdGenerator.getInstance();
+        String bookingCode = idGenerator.generateId();
+        log.info("booking code {}", bookingCode);
+
         // 4. Create and save the booking first
         Booking booking = new Booking();
+        booking.setBookingCode(bookingCode); // Set unique booking code
         booking.setCheckIn(request.getCheckInDate());
         booking.setCheckOut(request.getCheckOutDate());
         booking.setTotalPrice(request.getTotalPrice());
@@ -62,7 +72,46 @@ public class BookingServiceImpl implements BookingService {
         
         return savedBooking;
     }
-    
+
+    @Override
+    public Booking createBookingNonSingleton(BookingRequest request) {
+        // 1. Validate and get payment method
+        Payment payment = paymentRepository.findById(request.getPaymentMethod().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Payment method not found"));
+
+        // 2. Get current user
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BadCredentialsException("User not found with email " + email));
+
+        // 3. Generate unique booking code using Thread-Safe Singleton
+        NonSingletonBookingIdGenerator idGenerator = new NonSingletonBookingIdGenerator();
+        String bookingCode = idGenerator.generateId();
+        log.info("booking code {}", bookingCode);
+
+        // 4. Create and save the booking first
+        Booking booking = new Booking();
+        booking.setBookingCode(bookingCode); // Set unique booking code
+        booking.setCheckIn(request.getCheckInDate());
+        booking.setCheckOut(request.getCheckOutDate());
+        booking.setTotalPrice(request.getTotalPrice());
+        booking.setSpecialRequest(request.getSpecialRequests());
+        booking.setUser(user);
+        booking.setPaymentType(payment);
+        booking.setStatus(request.getStatus());
+
+        // Save booking first to get the ID
+        Booking savedBooking = bookingRepository.save(booking);
+
+        // 5. Create booking details
+        List<BookingDetail> bookingDetails = createBookingDetails(savedBooking, request.getRooms());
+
+        // 6. Save all booking details in a single batch
+        bookingDetailRepository.saveAll(bookingDetails);
+
+        return savedBooking;
+    }
+
     /**
      * Create booking details for each room in the booking
      */
