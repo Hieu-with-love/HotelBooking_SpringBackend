@@ -7,6 +7,7 @@ import hcmute.edu.vn.model.Booking;
 import java.util.List;
 
 public interface BookingService {
-    Booking createBooking(BookingRequest request);
+    Booking createBookingApplySingleton(BookingRequest request);
+    Booking createBookingNonSingleton(BookingRequest request);
     BookingResponse convertToBookingResponse(Booking booking);
 }

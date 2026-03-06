@@ -21,6 +21,9 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Identify this propoly booking
+    private String bookingCode;
+
     private String checkIn;
 
     private String checkOut;
