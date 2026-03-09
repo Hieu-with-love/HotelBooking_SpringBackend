@@ -41,7 +41,9 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private EROOMTYPE type = EROOMTYPE.SINGLE;
 
-    @ElementCollection(targetClass = ESERVICE.class)
+    @ElementCollection(targetClass = ESERVICE.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "room_services", joinColumns = @JoinColumn(name = "room_id"))
+    @Column(name = "service")
     @Enumerated(EnumType.STRING)
     private List<ESERVICE> services;
 

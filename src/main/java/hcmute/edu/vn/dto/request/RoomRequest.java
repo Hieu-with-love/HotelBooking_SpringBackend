@@ -17,4 +17,15 @@ public class RoomRequest {
     private BigDecimal price;
     private List<ESERVICE> services;
     private Long hotelId;
+    
+    /**
+     * Loại phòng template cho Factory Pattern: "STANDARD", "DELUXE", "SUITE"
+     * Dùng để xác định template phòng khi sử dụng Factory Pattern
+     */
+    private String roomType;
+    
+    /**
+     * Số lượng phòng cần tạo (chỉ dùng cho batch creation)
+     */
+    private Integer quantity = 1;
 }

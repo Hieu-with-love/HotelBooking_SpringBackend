@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏭 Factory Pattern Demo - Hotel Booking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-factory-method {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-abstract-factory {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-batch {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-compare {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-area {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .result-area h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        #result {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            max-height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+            color: #155724;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+            color: #721c24;
+        }
+
+        @media (max-width: 968px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏭 Factory Pattern Demo</h1>
+            <p>Demo trực quan Factory Method vs Abstract Factory Pattern với API thực tế</p>
+        </div>
+
+        <div class="main-grid">
+            <!-- Form Input -->
+            <div class="card">
+                <h2>📝 Thông tin phòng</h2>
+
+                <div class="info-box">
+                    <strong>💡 Hướng dẫn:</strong><br>
+                    1. Chọn loại phòng (Standard/Deluxe/Suite)<br>
+                    2. Nhập tên phòng<br>
+                    3. Chọn pattern để tạo phòng<br>
+                    4. Dữ liệu sẽ được lưu vào database
+                </div>
+
+                <div class="form-group">
+                    <label for="roomType">🏷️ Loại phòng:</label>
+                    <select id="roomType">
+                        <option value="STANDARD">Standard - 500,000 VND/đêm</option>
+                        <option value="DELUXE">Deluxe - 1,000,000 VND/đêm</option>
+                        <option value="SUITE">Suite - 2,500,000 VND/đêm</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="roomName">🚪 Tên phòng:</label>
+                    <input type="text" id="roomName" placeholder="Ví dụ: Phòng 101" value="Phòng Test">
+                </div>
+
+                <div class="form-group">
+                    <label for="hotelId">🏨 Hotel ID (tùy chọn):</label>
+                    <input type="number" id="hotelId" placeholder="Nhập ID hotel" value="1">
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">📊 Số lượng (cho batch):</label>
+                    <input type="number" id="quantity" min="1" max="10" value="3">
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="card">
+                <h2>🎯 Chọn Design Pattern</h2>
+
+                <div class="button-group">
+                    <button class="btn-factory-method" onclick="createWithFactoryMethod()">
+                        🔧 Factory Method Pattern
+                        <small>(Đơn giản - Chỉ tạo phòng)</small>
+                    </button>
+
+                    <button class="btn-abstract-factory" onclick="createWithAbstractFactory()">
+                        🏭 Abstract Factory Pattern
+                        <small>(Hoàn chỉnh - Phòng + Policies)</small>
+                    </button>
+
+                    <button class="btn-batch" onclick="createBatch()">
+                        📦 Batch Creation
+                        <small>(Tạo nhiều phòng cùng lúc)</small>
+                    </button>
+
+                    <button class="btn-compare" onclick="comparePatterns()">
+                        📊 So sánh 2 Pattern
+                    </button>
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Đang xử lý...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Area -->
+        <div class="result-area">
+            <h2>📋 Kết quả</h2>
+            <div id="result">Chọn một pattern để bắt đầu tạo phòng...</div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8080/api/v1/factory-demo';
+
+        function showLoading() {
+            document.getElementById('loading').classList.add('active');
+            document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').classList.remove('active');
+            document.querySelectorAll('button').forEach(btn => btn.disabled = false);
+        }
+
+        function displayResult(data, title) {
+            const resultDiv = document.getElementById('result');
+
+            let html = `═══════════════════════════════════════════════════════\n`;
+            html += `${title}\n`;
+            html += `═══════════════════════════════════════════════════════\n\n`;
+
+            if (typeof data === 'string') {
+                html += data;
+            } else {
+                html += JSON.stringify(data, null, 2);
+            }
+
+            resultDiv.textContent = html;
+        }
+
+        function displayError(error) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<div class="error-message">
+                ❌ LỖI: ${error.message || 'Không thể kết nối đến server'}
+                <br><br>
+                <strong>Kiểm tra:</strong><br>
+                - Server đang chạy ở port 8080?<br>
+                - CORS đã được cấu hình?<br>
+                - Database đã kết nối?
+            </div>`;
+        }
+
+        function getFormData() {
+            return {
+                roomType: document.getElementById('roomType').value,
+                roomName: document.getElementById('roomName').value,
+                hotelId: parseInt(document.getElementById('hotelId').value) || null,
+                quantity: parseInt(document.getElementById('quantity').value) || 1
+            };
+        }
+
+        async function createWithFactoryMethod() {
+            showLoading();
+
+            try {
+                const data = getFormData();
+
+                const response = await fetch(`${API_BASE_URL}/factory-method`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('API request failed');
+
+                const result = await response.json();
+
+                displayResult(result, '🔧 FACTORY METHOD PATTERN');
+
+            } catch (error) {
+                displayError(error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function createWithAbstractFactory() {
+            showLoading();
+
+            try {
+                const data = getFormData();
+
+                const response = await fetch(`${API_BASE_URL}/abstract-factory`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('API request failed');
+
+                const result = await response.json();
+
+                displayResult(result, '🏭 ABSTRACT FACTORY PATTERN');
+
+            } catch (error) {
+                displayError(error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function createBatch() {
+            showLoading();
+
+            try {
+                const data = getFormData();
+
+                const response = await fetch(`${API_BASE_URL}/batch`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('API request failed');
+
+                const result = await response.json();
+
+                displayResult(result, '📦 BATCH CREATION');
+
+            } catch (error) {
+                displayError(error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function comparePatterns() {
+            showLoading();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/compare`);
+
+                if (!response.ok) throw new Error('API request failed');
+
+                const result = await response.text();
+
+                displayResult(result, '📊 SO SÁNH 2 DESIGN PATTERN');
+
+            } catch (error) {
+                displayError(error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Health check on page load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                if (response.ok) {
+                    console.log('✅ API is ready!');
+                }
+            } catch (error) {
+                console.warn('⚠️ API not responding. Make sure server is running.');
+            }
+        });
+    </script>
+</body>
+
+</html>

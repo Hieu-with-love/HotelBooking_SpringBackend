@@ -1,0 +1,380 @@
+{
+    "info": {
+        "name": "Factory Pattern Demo API",
+        "description": "API demonstration for Factory Method vs Abstract Factory Pattern",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Factory Method Pattern",
+            "item": [
+                {
+                    "name": "Create STANDARD Room (Minimal)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"STANDARD\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/factory-method",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "factory-method"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create STANDARD Room (Full Data)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"STANDARD\",\n  \"name\": \"Phòng Standard 101\",\n  \"description\": \"Phòng tiêu chuẩn với đầy đủ tiện nghi cơ bản\",\n  \"numberOfAdults\": 2,\n  \"numberOfChildren\": 0,\n  \"numberOfBeds\": 1,\n  \"price\": 500000,\n  \"services\": [\n    \"WIFI\",\n    \"TV\",\n    \"AIR_CONDITIONING\"\n  ],\n  \"hotelId\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/factory-method",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "factory-method"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create DELUXE Room",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"DELUXE\",\n  \"name\": \"Phòng Deluxe 201\",\n  \"description\": \"Phòng cao cấp với không gian rộng rãi\",\n  \"numberOfAdults\": 3,\n  \"numberOfChildren\": 1,\n  \"numberOfBeds\": 1,\n  \"price\": 1000000,\n  \"services\": [\n    \"WIFI\",\n    \"TV\",\n    \"AIR_CONDITIONING\",\n    \"MINIBAR\",\n    \"BATHTUB\"\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/factory-method",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "factory-method"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create SUITE Room",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"SUITE\",\n  \"name\": \"Phòng Suite Presidential\",\n  \"description\": \"Phòng hạng sang với tiện nghi 5 sao\",\n  \"numberOfAdults\": 4,\n  \"numberOfChildren\": 2,\n  \"numberOfBeds\": 2,\n  \"price\": 2500000,\n  \"services\": [\n    \"WIFI\",\n    \"TV\",\n    \"AIR_CONDITIONING\",\n    \"MINIBAR\",\n    \"BATHTUB\",\n    \"BALCONY\",\n    \"SAFE_BOX\",\n    \"ROOM_SERVICE\"\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/factory-method",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "factory-method"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Abstract Factory Pattern",
+            "item": [
+                {
+                    "name": "Create STANDARD Room Ecosystem (Minimal)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"STANDARD\",\n  \"name\": \"Standard Room A1\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/abstract-factory",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "abstract-factory"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create STANDARD Room Ecosystem (Full)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"STANDARD\",\n  \"name\": \"Phòng Standard Premium 301\",\n  \"description\": \"Phòng Standard với chính sách giá và hủy linh hoạt\",\n  \"numberOfAdults\": 2,\n  \"numberOfChildren\": 1,\n  \"numberOfBeds\": 1,\n  \"price\": 550000,\n  \"services\": [\n    \"WIFI\",\n    \"TV\",\n    \"AIR_CONDITIONING\",\n    \"BREAKFAST\"\n  ],\n  \"hotelId\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/abstract-factory",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "abstract-factory"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create DELUXE Room Ecosystem",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"DELUXE\",\n  \"name\": \"Phòng Deluxe Ocean View\",\n  \"description\": \"Phòng Deluxe nhìn ra biển\",\n  \"numberOfAdults\": 3,\n  \"numberOfChildren\": 1,\n  \"numberOfBeds\": 2,\n  \"price\": 1200000,\n  \"services\": [\n    \"WIFI\",\n    \"TV\",\n    \"AIR_CONDITIONING\",\n    \"MINIBAR\",\n    \"BATHTUB\",\n    \"BALCONY\"\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/abstract-factory",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "abstract-factory"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create SUITE Room Ecosystem",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"SUITE\",\n  \"name\": \"Royal Suite\",\n  \"description\": \"Phòng Suite sang trọng bậc nhất\",\n  \"numberOfAdults\": 4,\n  \"numberOfChildren\": 2,\n  \"numberOfBeds\": 2,\n  \"price\": 3000000,\n  \"services\": [\n    \"WIFI\",\n    \"TV\",\n    \"AIR_CONDITIONING\",\n    \"MINIBAR\",\n    \"BATHTUB\",\n    \"BALCONY\",\n    \"SAFE_BOX\",\n    \"ROOM_SERVICE\",\n    \"SPA\",\n    \"GYM\"\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/abstract-factory",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "abstract-factory"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Batch Creation",
+            "item": [
+                {
+                    "name": "Create 5 STANDARD Rooms",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"STANDARD\",\n  \"name\": \"Phòng Standard Tầng 1 -\",\n  \"description\": \"Phòng Standard tầng 1 với view vườn\",\n  \"numberOfAdults\": 2,\n  \"numberOfChildren\": 0,\n  \"numberOfBeds\": 1,\n  \"price\": 500000,\n  \"services\": [\n    \"WIFI\",\n    \"TV\",\n    \"AIR_CONDITIONING\"\n  ],\n  \"quantity\": 5\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/batch",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "batch"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create 3 DELUXE Rooms",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"DELUXE\",\n  \"name\": \"Deluxe Room Floor 2 -\",\n  \"numberOfAdults\": 3,\n  \"numberOfChildren\": 1,\n  \"numberOfBeds\": 1,\n  \"price\": 1000000,\n  \"quantity\": 3\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/batch",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "batch"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create 2 SUITE Rooms",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomType\": \"SUITE\",\n  \"name\": \"Suite Penthouse -\",\n  \"description\": \"Suite cao cấp trên tầng cao nhất\",\n  \"numberOfAdults\": 4,\n  \"numberOfChildren\": 2,\n  \"numberOfBeds\": 2,\n  \"price\": 2500000,\n  \"quantity\": 2\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/batch",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "batch"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Utilities",
+            "item": [
+                {
+                    "name": "Compare Two Patterns",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:8080/api/v1/factory-demo/compare",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8080",
+                            "path": [
+                                "api",
+                                "v1",
+                                "factory-demo",
+                                "compare"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

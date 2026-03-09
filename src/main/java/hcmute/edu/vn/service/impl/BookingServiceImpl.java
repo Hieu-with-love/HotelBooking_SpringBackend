@@ -50,16 +50,33 @@ public class BookingServiceImpl implements BookingService {
         String bookingCode = idGenerator.generateId();
         log.info("booking code {}", bookingCode);
 
-        // 4. Create and save the booking first
-        Booking booking = new Booking();
-        booking.setBookingCode(bookingCode); // Set unique booking code
-        booking.setCheckIn(request.getCheckInDate());
-        booking.setCheckOut(request.getCheckOutDate());
-        booking.setTotalPrice(request.getTotalPrice());
-        booking.setSpecialRequest(request.getSpecialRequests());
-        booking.setUser(user);
-        booking.setPaymentType(payment);
-        booking.setStatus(request.getStatus());
+        // 4. Create and save the booking first (Constructor way)
+
+        Booking booking = new Booking(
+                null,
+                bookingCode,
+                request.getCheckInDate(),
+                request.getCheckOutDate(),
+                request.getTotalPrice(),
+                request.getSpecialRequests(),
+                payment,
+                user,
+                null,
+                request.getStatus()
+        );
+
+        // 4. Create and save the booking first (Builder Pattern)
+
+        Booking bookingBuilder = new Booking.Builder()
+                .bookingCode(bookingCode)
+                .checkIn(request.getCheckInDate())
+                .checkOut(request.getCheckOutDate())
+                .totalPrice(request.getTotalPrice())
+                .specialRequest(request.getSpecialRequests())
+                .paymentType(payment)
+                .user(user)
+                .status(request.getStatus())
+                .build();
         
         // Save booking first to get the ID
         Booking savedBooking = bookingRepository.save(booking);
