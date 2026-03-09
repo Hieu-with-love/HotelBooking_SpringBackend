@@ -8,6 +8,13 @@ public enum ESERVICE {
     SPA,
     RESTAURANT,
     GYM,
-    BREAKFAST, SWIMMING_POOL,
-
+    BREAKFAST,
+    SWIMMING_POOL,
+    TV,
+    AIR_CONDITIONING,
+    MINIBAR,
+    BATHTUB,
+    BALCONY,
+    SAFE_BOX,
+    ROOM_SERVICE
 }
